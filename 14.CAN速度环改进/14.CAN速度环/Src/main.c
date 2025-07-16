@@ -167,7 +167,7 @@ while (1)
         HAL_UART_Transmit(&huart1, (uint8_t *)buf, len, 100);
     }
     HAL_Delay(500); // 慢一点方便观察
-
+//2025/7/16 第一次分支
 
 
 
