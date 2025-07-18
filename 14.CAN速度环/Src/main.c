@@ -58,7 +58,7 @@
 PID_TypeDef motor_pid[4];
 char tx_buffer[1000];
 extern TIM_HandleTypeDef htim2;
-extern UART_HandleTypeDef huart1;  // È·±£ÄãÒÑ¾­ÔÚ±ğ´¦¶¨ÒåÁËÕâ¸ö¾ä±ú
+extern UART_HandleTypeDef huart1;  // ç¡®ä¿ä½ å·²ç»åœ¨åˆ«å¤„å®šä¹‰äº†è¿™ä¸ªå¥æŸ„
 extern volatile uint8_t uart_tx_done;
 extern void UART1_Send_DMA(uint8_t *buf, uint16_t len);
  
@@ -119,13 +119,11 @@ HAL_TIM_Base_Start_IT(&htim2);
 can_filter_init();
   
   for(int i=0; i<4; i++)
-{	
-
-pid_init(&motor_pid[i]);
-motor_pid[i].f_param_init(&motor_pid[i],PID_Speed,8000,4000,10,0,2000,500,2.5,0.1,0);
-
-
-}	
+  {
+    pid_init(&motor_pid[i]);
+    // åªç”¨Pæ§åˆ¶ï¼ŒIå’ŒDè®¾ä¸º0ï¼Œtargetä¹Ÿå‡å°
+    motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 4000, 500, 10, 0, 4000, 500, 2.5, 0.1, 0);
+  }
   
   /* USER CODE END 2 */
 
@@ -133,12 +131,7 @@ motor_pid[i].f_param_init(&motor_pid[i],PID_Speed,8000,4000,10,0,2000,500,2.5,0.
   /* USER CODE BEGIN WHILE */
 while (1)
 {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-
-
-    for (int i = 0; i < 4; i++)
+     for (int i = 0; i < 4; i++)
     {
         motor_pid[i].target = 1000;
         const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
@@ -146,60 +139,14 @@ while (1)
 
         motor_pid[i].f_cal_pid(&motor_pid[i], motor_data->speed_rpm);
 
-//        int len = snprintf(
-//            tx_buffer, sizeof(tx_buffer),
-//            "Motor %d - Speed: %d, Position: %d, Current: %d\r\n",
-//            i, motor_data->speed_rpm, motor_data->ecd, motor_data->given_current
-//        );
-//UART1_Send_IT((uint8_t *)tx_buffer, len);
-//        // ? Ê¹ÓÃÎÒÃÇ·â×°µÄ DMA ·¢ËÍº¯Êı
-//        UART1_Send_DMA((uint8_t *)tx_buffer, len);
+
     }
 
 
     CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output,
                     motor_pid[2].output, motor_pid[3].output);
+	  HAL_Delay(10);
 
-    // ´òÓ¡ËùÓĞµç»úµÄËÙ¶Èµ½´®¿Ú£¬·½±ã´®¿ÚÖúÊÖ»òVOFA+µ÷ÊÔ
-    char buf[100];
-    for (int i = 0; i < 4; i++) {
-        int len = snprintf(buf, sizeof(buf), "M%d:%d\r\n", i, get_chassis_motor_measure_point(i)->speed_rpm);
-        HAL_UART_Transmit(&huart1, (uint8_t *)buf, len, 100);
-    }
-    HAL_Delay(500); // ÂıÒ»µã·½±ã¹Û²ì
-//2025/7/16 µÚÒ»´Î·ÖÖ§
-
-
-
-      
-  
-//CAN_cmd_chassis(400,400,400,400);
-//for(int i=0; i<4; i++)
-//{	
-//	motor_pid[i].target = 1000;
-//	const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);				
-//	motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //¸ù¾İÉè¶¨Öµ½øĞĞPID¼ÆËã¡£
-
-
-
-//	printf("FL=%d FR=%d BL=%d BR=%d\r\n", (int)wheel_speed_FL, (int)wheel_speed_FR, (int)wheel_speed_BL, (int)wheel_speed_BR);
-//	
-//	int len =snprintf
-//		(
-//			tx_buffer, sizeof(tx_buffer),
-//			"Motor %d - Speed: %d, Position: %d, Current: %d\r\n",
-//			i, motor_data->speed_rpm, motor_data->ecd, motor_data->given_current
-//		);
-//	
-//}
-
-//CAN_cmd_chassis(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
-
-//HAL_Delay(10);      //PID¿ØÖÆÆµÂÊ100HZ
-
-
-//		HAL_Delay(20);
-  
 }
   /* USER CODE END 3 */
 }
@@ -220,6 +167,7 @@ void SystemClock_Config(void)
   /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
@@ -247,6 +195,19 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+// å®šæ—¶å™¨ä¸­æ–­å›è°ƒï¼Œå®šæ—¶å‘é€VOFAæ•°æ®ï¼ˆfloatæ ¼å¼ï¼ŒVOFAå¯ç›´æ¥ç”»å›¾ï¼‰
+//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+//{
+//    if (htim == &htim2)
+//    {
+//        float vofa_data[4];
+//        for (int i = 0; i < 4; i++) {
+//            vofa_data[i] = (float)get_chassis_motor_measure_point(i)->speed_rpm;
+//        }
+//        // å‘é€4ä¸ªfloatæ•°æ®åˆ°VOFA+
+//        HAL_UART_Transmit(&huart1, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
+//    }
+//}
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //{
 
@@ -256,36 +217,49 @@ void SystemClock_Config(void)
 //{	
 //  motor_pid[i].target = 1000;
 //		const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);				
-//			motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //¸ù¾İÉè¶¨Öµ½øĞĞPID¼ÆËã¡£
+//			motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //æ ¹æ®è®¾å®šå€¼è¿›è¡ŒPIDè®¡ç®—ã€‚
 //}
 //CAN_cmd_chassis(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
 //}
 //}
 
 
-// ? DMA ·¢ËÍÍê³É»Øµ÷
+// ? DMA å‘é€å®Œæˆå›è°ƒ
 //void USART1_IRQHandler(void)
 //{
-//    /* TXE ¿ÕÖĞ¶Ï */
+//    /* TXE ç©ºä¸­æ–­ */
 //    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TXE))
 //    {
 //        if (tx_buf_len > 0)
 //        {
-//            USART1->DR = *tx_buf_ptr++;   // ·¢ËÍÒ»¸ö×Ö½Ú
+//            USART1->DR = *tx_buf_ptr++;   // å‘é€ä¸€ä¸ªå­—èŠ‚
 //            tx_buf_len--;
 //        }
 //        else
 //        {
-//            /* ·¢ÍêÁË£¬¹Ø±Õ TXE ÖĞ¶Ï£¬·ÀÖ¹Ò»Ö±½øÖĞ¶Ï */
+//            /* å‘å®Œäº†ï¼Œå…³é—­ TXE ä¸­æ–­ï¼Œé˜²æ­¢ä¸€ç›´è¿›ä¸­æ–­ */
 //            __HAL_UART_DISABLE_IT(&huart1, UART_IT_TXE);
 //            tx_busy = 0;
 //        }
 //    }
 
-//    /* ÈçÓĞ RX ÖĞ¶Ï£¬¿ÉÔÚ´Ë´¦Àí */
+//    /* å¦‚æœ‰ RX ä¸­æ–­ï¼Œå¯åœ¨æ­¤å¤„ç† */
 //}
 
-
+// å®šæ—¶å™¨ä¸­æ–­å›è°ƒï¼Œå®šæ—¶å‘é€VOFAæ•°æ®
+/*void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim == &htim2)
+    {
+       char buf[100];
+    for (int i = 0; i < 4; i++) {
+        int len = snprintf(buf, sizeof(buf), "M%d:%d\r\n", i, get_chassis_motor_measure_point(i)->speed_rpm);
+        HAL_UART_Transmit(&huart1, (uint8_t *)buf, len, 100);
+   }
+    HAL_Delay(500);
+    
+    }
+}*/
 /* USER CODE END 4 */
 
 /**

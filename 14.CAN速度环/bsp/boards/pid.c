@@ -6,7 +6,7 @@
   * @date    2015/11/14
   * @brief   ��ÿһ��pid�ṹ�嶼Ҫ�Ƚ��к��������ӣ��ٽ��г�ʼ��
   ******************************************************************************
-  * @attention Ӧ�����ö��ײ��(d)��̨������ȶ�
+  * @attention Ӧ�����ö��ײ��?(d)��̨������ȶ�?
   *
   ******************************************************************************
   */
@@ -30,7 +30,7 @@ static void pid_param_init(
 	uint16_t intergral_limit,
 	float deadband,
 	uint16_t period,
-	int16_t  max_err,   // 允许的最大误差（用于保护或报警）
+	int16_t  max_err,   // 允�?�的最大�??�?（用于保护或报�?�）
 	int16_t  target,
 
 	float 	kp, 
@@ -79,7 +79,7 @@ static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 	
 	pid->err = pid->target - pid->measure;
 	
-	//�Ƿ��������
+	//�Ƿ��������?
 	if((ABS(pid->err) > pid->DeadBand))
 	{
 		pid->pout = pid->kp * pid->err;
@@ -94,12 +94,12 @@ static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 		if(pid->iout < - pid->IntegralLimit)
 			pid->iout = - pid->IntegralLimit;
 		
-		//pid�����
+		//pid�����?
 		pid->output = pid->pout + pid->iout + pid->dout;
 		
 
-		//pid->output = pid->output*0.7f + pid->last_output*0.3f;  //�˲���
-		if(pid->output>pid->MaxOutput)         
+		//pid->output = pid->output*0.7f + pid->last_output*0.3f;  //滤波
+		if(pid->output > pid->MaxOutput)         
 		{
 			pid->output = pid->MaxOutput;
 		}
@@ -107,7 +107,11 @@ static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 		{
 			pid->output = -(pid->MaxOutput);
 		}
-	
+		// 死区补偿：输出不�?0但绝对值小�?100时，强制输出±100
+		if(pid->output > 0 && pid->output < 100)
+			pid->output = 30;
+		else if(pid->output < 0 && pid->output > -100)
+			pid->output = -30;
 	}
 
 
