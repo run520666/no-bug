@@ -1,7 +1,7 @@
 can\ps2.o: ..\application\ps2.c
 can\ps2.o: ..\application\PS2.h
-can\ps2.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
-can\ps2.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+can\ps2.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdio.h
+can\ps2.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdlib.h
 can\ps2.o: ../Inc/main.h
 can\ps2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 can\ps2.o: ../Inc/stm32f4xx_hal_conf.h
@@ -10,7 +10,7 @@ can\ps2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 can\ps2.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 can\ps2.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 can\ps2.o: ../Drivers/CMSIS/Include/core_cm4.h
-can\ps2.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
+can\ps2.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdint.h
 can\ps2.o: ../Drivers/CMSIS/Include/cmsis_version.h
 can\ps2.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 can\ps2.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -18,7 +18,7 @@ can\ps2.o: ../Drivers/CMSIS/Include/mpu_armv7.h
 can\ps2.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 can\ps2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 can\ps2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-can\ps2.o: D:\keil5\ARM\ARMCC\Bin\..\include\stddef.h
+can\ps2.o: D:\kile5\ARM\ARMCC\Bin\..\include\stddef.h
 can\ps2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 can\ps2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h
 can\ps2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h

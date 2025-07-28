@@ -1,2 +1,5 @@
 Load "can\\can.axf" 
-Erase Done.Programming Done.Verify OK.Flash Load finished at 19:54:16
+_____^
+*** error 56: cannot open file
+Error: Flash Download failed  -  Could not load file 'can\can.axf'
+Flash Load finished at 16:24:56
