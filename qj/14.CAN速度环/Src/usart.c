@@ -36,10 +36,7 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USART1 init function */
-uint8_t  *tx_buf_ptr  = NULL;
-uint16_t  tx_buf_len  = 0;
-volatile uint8_t tx_busy = 0;
-volatile uint8_t uart_tx_done = 1;
+
 void MX_USART1_UART_Init(void)
 {
 
@@ -57,17 +54,7 @@ void MX_USART1_UART_Init(void)
   }
 
 }
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart == &huart1)
-        uart_tx_done = 1;
-}
-void UART1_Send_DMA(uint8_t *buf, uint16_t len)
-{
-    while (!uart_tx_done);   // 等待上一次发送完成
-    uart_tx_done = 0;
-    HAL_UART_Transmit_DMA(&huart1, buf, len);
-}
+
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 {
 
@@ -202,5 +189,9 @@ void UART1_Send_IT(uint8_t *buf, uint16_t len)
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_TXE);
 }
 /* USER CODE END 1 */
+
+uint8_t *tx_buf_ptr = NULL;
+uint16_t tx_buf_len = 0;
+uint8_t tx_busy = 0;
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

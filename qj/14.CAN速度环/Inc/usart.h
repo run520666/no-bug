@@ -31,16 +31,20 @@
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
-extern volatile uint8_t uart_tx_done;
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
-void UART1_Send_IT(uint8_t *buf, uint16_t len);
+
 void MX_USART1_UART_Init(void);
-void UART1_Send_DMA(uint8_t *buf, uint16_t len);
+
 /* USER CODE BEGIN Prototypes */
 void UART_DMA_Send(const char *str);
 /* USER CODE END Prototypes */
+
+extern uint8_t *tx_buf_ptr;
+extern uint16_t tx_buf_len;
+extern uint8_t tx_busy;
 
 #ifdef __cplusplus
 }
