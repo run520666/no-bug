@@ -39,11 +39,14 @@ extern UART_HandleTypeDef huart1;
 
 /* USER CODE END Private defines */
 
+void MX_USART1_UART_Init(void);
+
 /* USER CODE BEGIN Prototypes */
 void UART1_Send_IT(uint8_t *buf, uint16_t len);
 void MX_USART1_UART_Init(void);
 void UART1_Send_DMA(uint8_t *buf, uint16_t len);
 void UART_DMA_Send(const char *str);
+void UART_Send_VOFA(float *data, uint8_t channel_count);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

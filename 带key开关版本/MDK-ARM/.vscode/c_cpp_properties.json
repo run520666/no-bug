@@ -3,18 +3,18 @@
         {
             "name": "can",
             "includePath": [
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\Inc",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\Drivers\\CMSIS\\Include",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\application",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\bsp\\boards",
+                "d:\\GIT\\no-bug\\带key开关版本\\Inc",
+                "d:\\GIT\\no-bug\\带key开关版本\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
+                "d:\\GIT\\no-bug\\带key开关版本\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
+                "d:\\GIT\\no-bug\\带key开关版本\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
+                "d:\\GIT\\no-bug\\带key开关版本\\Drivers\\CMSIS\\Include",
+                "d:\\GIT\\no-bug\\带key开关版本\\application",
+                "d:\\GIT\\no-bug\\带key开关版本\\bsp\\boards",
                 "D:\\kile5\\ARM\\ARMCC\\include",
                 "D:\\kile5\\ARM\\ARMCC\\include\\rw",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\MDK-ARM",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\Src",
-                "d:\\Download\\nobug\\no-bug-qj-2\\no-bug-qj\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Src"
+                "d:\\GIT\\no-bug\\带key开关版本\\MDK-ARM",
+                "d:\\GIT\\no-bug\\带key开关版本\\Src",
+                "d:\\GIT\\no-bug\\带key开关版本\\Drivers\\STM32F4xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

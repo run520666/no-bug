@@ -160,8 +160,8 @@ void mecanum_move_forward(mecanum_control_t *mecanum_control, fp32 speed)
     {
         return;
     }
-    
-    mecanum_control->vx = speed;
+
+    mecanum_control->vx = -speed; // 反转方向
     mecanum_control->vy = 0.0f;
     mecanum_control->vw = 0.0f;
     mecanum_calculate_wheel_speed(mecanum_control);
@@ -179,8 +179,8 @@ void mecanum_move_backward(mecanum_control_t *mecanum_control, fp32 speed)
     {
         return;
     }
-    
-    mecanum_control->vx = -speed;
+
+    mecanum_control->vx = speed; // 反转方向
     mecanum_control->vy = 0.0f;
     mecanum_control->vw = 0.0f;
     mecanum_calculate_wheel_speed(mecanum_control);
@@ -198,9 +198,9 @@ void mecanum_move_left(mecanum_control_t *mecanum_control, fp32 speed)
     {
         return;
     }
-    
+
     mecanum_control->vx = 0.0f;
-    mecanum_control->vy = speed;
+    mecanum_control->vy = -speed; // 反转方向
     mecanum_control->vw = 0.0f;
     mecanum_calculate_wheel_speed(mecanum_control);
 }
@@ -217,9 +217,9 @@ void mecanum_move_right(mecanum_control_t *mecanum_control, fp32 speed)
     {
         return;
     }
-    
+
     mecanum_control->vx = 0.0f;
-    mecanum_control->vy = -speed;
+    mecanum_control->vy = speed; // 反转方向
     mecanum_control->vw = 0.0f;
     mecanum_calculate_wheel_speed(mecanum_control);
 }
@@ -236,10 +236,10 @@ void mecanum_rotate_left(mecanum_control_t *mecanum_control, fp32 speed)
     {
         return;
     }
-    
+
     mecanum_control->vx = 0.0f;
     mecanum_control->vy = 0.0f;
-    mecanum_control->vw = speed;
+    mecanum_control->vw = -speed; // 反转方向
     mecanum_calculate_wheel_speed(mecanum_control);
 }
 
@@ -255,10 +255,10 @@ void mecanum_rotate_right(mecanum_control_t *mecanum_control, fp32 speed)
     {
         return;
     }
-    
+
     mecanum_control->vx = 0.0f;
     mecanum_control->vy = 0.0f;
-    mecanum_control->vw = -speed;
+    mecanum_control->vw = speed; // 反转方向
     mecanum_calculate_wheel_speed(mecanum_control);
 }
 

@@ -42,6 +42,7 @@ DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USART1 init function */
+
 void MX_USART1_UART_Init(void)
 {
 
@@ -59,17 +60,7 @@ void MX_USART1_UART_Init(void)
   }
 
 }
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart == &huart1)
-        uart_tx_done = 1;
-}
-void UART1_Send_DMA(uint8_t *buf, uint16_t len)
-{
-    while (!uart_tx_done);   // 等待上一次发送完成
-    uart_tx_done = 0;
-    HAL_UART_Transmit_DMA(&huart1, buf, len);
-}
+
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 {
 
@@ -112,7 +103,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_usart1_rx.Init.Mode = DMA_NORMAL;
-    hdma_usart1_rx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_usart1_rx.Init.Priority = DMA_PRIORITY_HIGH;
     hdma_usart1_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_usart1_rx) != HAL_OK)
     {
@@ -130,7 +121,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_usart1_tx.Init.Mode = DMA_NORMAL;
-    hdma_usart1_tx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_usart1_tx.Init.Priority = DMA_PRIORITY_HIGH;
     hdma_usart1_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_usart1_tx) != HAL_OK)
     {
@@ -202,6 +193,14 @@ void UART1_Send_IT(uint8_t *buf, uint16_t len)
     tx_busy = 1;
 
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_TXE);
+}
+void UART_Send_VOFA(float *data, uint8_t channel_count) {
+    // 定义帧尾
+    const unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};
+    // 发送浮点数据
+    HAL_UART_Transmit(&huart1, (uint8_t *)data, sizeof(float) * channel_count, HAL_MAX_DELAY);
+    // 发送帧尾
+    HAL_UART_Transmit(&huart1, (uint8_t *)tail, sizeof(tail), HAL_MAX_DELAY);
 }
 /* USER CODE END 1 */
 

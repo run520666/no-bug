@@ -45,10 +45,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define WHEEL_FR 0  // 右前轮
-#define WHEEL_FL 1  // 左前轮
-#define WHEEL_BL 2  // 左后轮
-#define WHEEL_BR 3  // 右后轮
+#define WHEEL_FR 0  // 右前�?
+#define WHEEL_FL 1  // 左前�?
+#define WHEEL_BL 2  // 左后�?
+#define WHEEL_BR 3  // 右后�?
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -62,7 +62,7 @@
 PID_TypeDef motor_pid[4];
 char tx_buffer[1000];
 extern TIM_HandleTypeDef htim2;
-extern UART_HandleTypeDef huart1;  // 确保你已经在别处定义了这个句柄
+extern UART_HandleTypeDef huart1;  // 确保你已经在别处定义了这个句�?
 extern volatile uint8_t uart_tx_done;
 extern void UART1_Send_DMA(uint8_t *buf, uint16_t len);
 
@@ -125,7 +125,7 @@ int main(void)
 HAL_TIM_Base_Start_IT(&htim2);
 can_filter_init();
   
-  // 修改 PID 初始化代码
+  // 修改 PID 初始化代�?
   for (int i = 0; i < 4; i++) {
     pid_init(&motor_pid[i]);
     motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 4000, 500, 10, 0, 4000, 500, 2.5, 0.1, 0);
@@ -140,11 +140,13 @@ can_filter_init();
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-while (1)
-{
+  while (1)
+  {
+    /*
     static uint32_t last_time = 0;
     static uint8_t demo_state = 0;
     uint32_t current_time = HAL_GetTick();
+    */
     // 检测PA0状态
     uint8_t pin_state = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
     HAL_Delay(10); // 确保读取稳定
@@ -155,105 +157,27 @@ while (1)
         CAN_cmd_chassis(0, 0, 0, 0); // 发送停止指令
         continue; // 跳过后续逻辑
     }
-
-    // 测试基本动作演示
-    if (is_pa0_pressed == 0)
+    if (is_pa0_pressed == 0)// 处理正常状态下的逻辑
     {
-        // 每3秒切换一次动作
-        if (current_time - last_time > 3000)
-        {
-            last_time = current_time;
-            demo_state = (demo_state + 1) % 7;
-
-        // 执行不同的动作
-        switch (demo_state)
-        {
-            case 0:  // 前进
-                mecanum_move_forward(&mecanum, 1000.0f);
-                break;
-            case 1:  // 后退
-                mecanum_move_backward(&mecanum, 1000.0f);
-                break;
-            /*
-            case 2:  // 左移
-                mecanum_move_left(&mecanum, 1000.0f);
-                break;
-            case 3:  // 右移
-                mecanum_move_right(&mecanum, 1000.0f);
-                break;
-            case 4:  // 左转
-                mecanum_rotate_left(&mecanum, 500.0f);
-                break;
-            case 5:  // 右转
-                mecanum_rotate_right(&mecanum, 500.0f);
-                break;
-            case 6:  // 停止
-                mecanum_stop(&mecanum);
-                break;
-                */
-        }
-      }
-    }
-
-    // 目标位置导航示例 (可以取消注释使用)
-    /*
-    static uint8_t nav_started = 0;
-    
-    if (!nav_started)
-    {
-        // 设置目标位置 (单位:米)
-        mecanum_set_target(&mecanum, 1.0f, 1.0f);
-        nav_started = 1;
-    }
-
-    // 假设有位置传感器更新位置 (实际应该用传感器数据)
-    static fp32 sim_x = 0.0f;
-    static fp32 sim_y = 0.0f;
-    static fp32 sim_angle = 0.0f;
-    
-    // 这里应该用实际传感器数据更新位置和角度
-    // 简化模拟: 根据速度简单更新位置
-    fp32 dt = 0.01f;  // 10ms循环
-    sim_x += mecanum.vx * dt * 0.001f;  // 假设转换系数
-    sim_y += mecanum.vy * dt * 0.001f;
-    sim_angle += mecanum.vw * dt * 0.001f;
-    
-    // 更新位置到控制结构体
-    mecanum_update_position(&mecanum, sim_x, sim_y, sim_angle);
-    
-    // 执行导航步进
-    mecanum_navigate_step(&mecanum);
-    */
+      mecanum_move_forward(&mecanum, 1000.0f); // 前进
 
     // 更新PID控制
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++) 
     {
-        // 设置PID目标速度为麦克纳姆轮计算得到的速度
         motor_pid[i].target = mecanum.wheel_speed[i];
-        
-        // 获取电机实际速度并计算PID输出
         const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
-        if (!motor_data) continue;
-        motor_pid[i].f_cal_pid(&motor_pid[i], motor_data->speed_rpm);
+        if (motor_data) {
+            motor_pid[i].f_cal_pid(&motor_pid[i], motor_data->speed_rpm);
+        }
     }
-
     // 发送电机控制指令
-    CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output,
-                    motor_pid[2].output, motor_pid[3].output);
-
-    // 打印调试信息
-    if (current_time - last_time > 500)
-    {
-        int len = snprintf(tx_buffer, sizeof(tx_buffer), 
-                          "State: %d, Speeds: %.1f, %.1f, %.1f, %.1f\r\n",
-                          demo_state,
-                          mecanum.wheel_speed[0], mecanum.wheel_speed[1],
-                          mecanum.wheel_speed[2], mecanum.wheel_speed[3]);
-        HAL_UART_Transmit(&huart1, (uint8_t *)tx_buffer, len, 100);
+    CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output, motor_pid[2].output, motor_pid[3].output);
+    HAL_Delay(10); // 延迟10毫秒
     }
-    
-    HAL_Delay(10);
-}
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+  }
   /* USER CODE END 3 */
 }
 
@@ -273,7 +197,6 @@ void SystemClock_Config(void)
   /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
@@ -301,7 +224,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-// 定时器中断回调，定时发送VOFA数据（float格式，VOFA可直接画图）
+// 定时器中断回调，定时发�?�VOFA数据（float格式，VOFA可直接画图）
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //{
 //    if (htim == &htim2)
@@ -310,7 +233,7 @@ void SystemClock_Config(void)
 //        for (int i = 0; i < 4; i++) {
 //            vofa_data[i] = (float)get_chassis_motor_measure_point(i)->speed_rpm;
 //        }
-//        // 发送4个float数据到VOFA+
+//        // 发�??4个float数据到VOFA+
 //        HAL_UART_Transmit(&huart1, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
 //    }
 //}
@@ -323,22 +246,22 @@ void SystemClock_Config(void)
 //{	
 //  motor_pid[i].target = 1000;
 //		const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);				
-//			motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //根据设定值进行PID计算。
+//			motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //根据设定值进行PID计算�?
 //}
 //CAN_cmd_chassis(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
 //}
 //}
 
 
-// ? DMA 发送完成回调
+// ? DMA 发�?�完成回�?
 //void USART1_IRQHandler(void)
 //{
-//    /* TXE 空中断 */
+//    /* TXE 空中�? */
 //    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TXE))
 //    {
 //        if (tx_buf_len > 0)
 //        {
-//            USART1->DR = *tx_buf_ptr++;   // 发送一个字节
+//            USART1->DR = *tx_buf_ptr++;   // 发�?�一个字�?
 //            tx_buf_len--;
 //        }
 //        else
@@ -352,7 +275,7 @@ void SystemClock_Config(void)
 //    /* 如有 RX 中断，可在此处理 */
 //}
 
-// 定时器中断回调，定时发送VOFA数据
+// 定时器中断回调，定时发�?�VOFA数据
 /*void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim == &htim2)
