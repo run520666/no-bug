@@ -3,18 +3,18 @@
         {
             "name": "can",
             "includePath": [
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\Inc",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\Drivers\\CMSIS\\Include",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\application",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\bsp\\boards",
-                "D:\\kile5\\ARM\\ARMCC\\include",
-                "D:\\kile5\\ARM\\ARMCC\\include\\rw",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\MDK-ARM",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\Src",
-                "d:\\GIT\\no-bug\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Src"
+                "d:\\no-bug\\qj\\14.CAN速度环\\Inc",
+                "d:\\no-bug\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
+                "d:\\no-bug\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
+                "d:\\no-bug\\qj\\14.CAN速度环\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
+                "d:\\no-bug\\qj\\14.CAN速度环\\Drivers\\CMSIS\\Include",
+                "d:\\no-bug\\qj\\14.CAN速度环\\application",
+                "d:\\no-bug\\qj\\14.CAN速度环\\bsp\\boards",
+                "D:\\keil5\\ARM\\ARMCC\\include",
+                "D:\\keil5\\ARM\\ARMCC\\include\\rw",
+                "d:\\no-bug\\qj\\14.CAN速度环\\MDK-ARM",
+                "d:\\no-bug\\qj\\14.CAN速度环\\Src",
+                "d:\\no-bug\\qj\\14.CAN速度环\\Drivers\\STM32F4xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

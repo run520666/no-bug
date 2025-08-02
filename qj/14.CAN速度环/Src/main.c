@@ -227,21 +227,18 @@ while (1)
     CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output,
                     motor_pid[2].output, motor_pid[3].output);
 
-    // 打印调试信息
-    if (current_time - last_time > 500)
-    {
-        int len = snprintf(tx_buffer, sizeof(tx_buffer), 
-                          "State: %d, Speeds: %.1f, %.1f, %.1f, %.1f\r\n",
-                          demo_state,
-                          mecanum.wheel_speed[0], mecanum.wheel_speed[1],
-                          mecanum.wheel_speed[2], mecanum.wheel_speed[3]);
-        HAL_UART_Transmit(&huart1, (uint8_t *)tx_buffer, len, 100);
+    // VOFA绘图数据发送（float格式，VOFA可直接画图）
+    float vofa_data[4];
+    for (int i = 0; i < 4; i++) {
+        vofa_data[i] = (float)get_chassis_motor_measure_point(i)->speed_rpm;
     }
+    HAL_UART_Transmit(&huart1, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
     
     HAL_Delay(10);
 }
-  /* USER CODE END 3 */
 }
+  /* USER CODE END 3 */
+
 
 /**
   * @brief System Clock Configuration
