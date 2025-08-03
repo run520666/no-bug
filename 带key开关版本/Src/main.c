@@ -127,7 +127,7 @@ int main(void)
 HAL_TIM_Base_Start_IT(&htim2);
 can_filter_init();
   
-  // 修改 PID 初始化代�?
+  // 修改 PID 初始化代码
   for (int i = 0; i < 4; i++) {
     pid_init(&motor_pid[i]);
     motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 4000, 500, 10, 10, 4000, 500, 3.7, 0.1, 0.05);    
