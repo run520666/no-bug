@@ -1,7 +1,2 @@
-*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\kile5\ARM\ARMCC\Bin'
-Build target 'can'
-compiling mecanum_control.c...
-linking...
-Program Size: Code=12386 RO-data=458 RW-data=52 ZI-data=3020  
-"can\can.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:01
+Load "can\\can.axf" 
+Erase Done.Programming Done.Verify OK.Flash Load finished at 20:00:55

@@ -35,6 +35,8 @@
 #include "usart.h"
 #include "mecanum_control.h"
 #include <math.h>
+#include <string.h>
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -128,7 +130,10 @@ can_filter_init();
   // 修改 PID 初始化代�?
   for (int i = 0; i < 4; i++) {
     pid_init(&motor_pid[i]);
-    motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 4000, 500, 10, 0, 4000, 500, 2.5, 0.1, 0);
+    motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 4000, 500, 10, 10, 4000, 500, 3.7, 0.1, 0.05);    
+        // PID模式（位置或速度）、最大输出、积分限幅、死区（绝对值）、控制周期、最大误差、目标值、kp、ki、kd）
+        //开始版本kp=2.5，ki=0.1
+        //初步调试kp=3.7，ki=0.1，kd=0.05
     motor_pid[i].target = mecanum.wheel_speed[i];
   }
   
@@ -147,6 +152,7 @@ can_filter_init();
     static uint8_t demo_state = 0;
     uint32_t current_time = HAL_GetTick();
     */
+    
     // 检测PA0状态
     uint8_t pin_state = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
     HAL_Delay(10); // 确保读取稳定
@@ -172,6 +178,19 @@ can_filter_init();
     }
     // 发送电机控制指令
     CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output, motor_pid[2].output, motor_pid[3].output);
+    
+    // VOFA绘图数据发送（只在VOFA模式下发送）
+    // 发送8个通道：4个实际速度值 + 4个设定速度值
+    float vofa_data[8];
+    for (int i = 0; i < 4; i++) {
+        vofa_data[i] = (float)get_chassis_motor_measure_point(i)->speed_rpm;     // 实际速度
+        vofa_data[i + 4] = (float)motor_pid[i].target;                          // 设定速度
+    }
+    // 发送浮点数组
+    HAL_UART_Transmit(&huart1, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
+    // 发送帧尾
+    unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};
+    HAL_UART_Transmit(&huart1, tail, 4, 100);
     HAL_Delay(10); // 延迟10毫秒
     }
     /* USER CODE END WHILE */
@@ -224,6 +243,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
 // 定时器中断回调，定时发�?�VOFA数据（float格式，VOFA可直接画图）
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //{
