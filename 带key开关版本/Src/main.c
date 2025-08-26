@@ -34,6 +34,8 @@
 #include "pid.h"
 #include "usart.h"
 #include "mecanum_control.h"
+#include "encoder_position.h"
+#include "command_parser.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -70,6 +72,15 @@ extern void UART1_Send_DMA(uint8_t *buf, uint16_t len);
 
 // 麦克纳姆轮控制结构体
 mecanum_control_t mecanum;
+
+// 编码器位置反馈结构体
+encoder_position_t encoder_position;
+
+// 命令解析器
+command_parser_t cmd_parser;
+
+// 串口接收缓冲区
+uint8_t uart_rx_char = 0;
  
 /* USER CODE END PV */
 
@@ -78,6 +89,11 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void UART1_Send_DMA(uint8_t *buf, uint16_t len);
 void UART1_Send_IT(uint8_t *buf, uint16_t len);
+
+// 坐标导航示例函数
+void navigation_demo(void);
+void goto_coordinate(float x, float y);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -134,12 +150,50 @@ can_filter_init();
         // PID模式（位置或速度）、最大输出、积分限幅、死区（绝对值）、控制周期、最大误差、目标值、kp、ki、kd）
         //开始版本kp=2.5，ki=0.1
         //初步调试kp=3.7，ki=0.1，kd=0.05
+        //p2.7,i0.1,d0.05-0.1不错
     motor_pid[i].target = mecanum.wheel_speed[i];
   }
   
+  // 初始化编码器位置反馈
+  encoder_position_init(&encoder_position);
+  
   // 初始化麦克纳姆轮控制
   mecanum_init(&mecanum);
+  
+  // 设置编码器位置反馈
+  mecanum_set_encoder(&mecanum, &encoder_position);
+  
+  // 初始化命令解析器
+  command_parser_init(&cmd_parser, &mecanum, &encoder_position);
+  
+  // 启动串口接收中断
+  static uint8_t rx_char;
+  HAL_UART_Receive_IT(&huart1, &rx_char, 1);
+  
   static uint8_t is_pa0_pressed = 0; // 按键状态标志
+  
+  // 欢迎信息和帮助
+  printf("=== Mecanum Wheel Navigation System ===\n");
+  printf("System initialized successfully!\n");
+  printf("Type 'help' for available commands\n");
+  printf("Example: goto 1000 500 (navigate to x=1000mm, y=500mm)\n");
+  printf("======================================\n");
+  
+  // ========== 坐标导航使用示例 ==========
+  // 方法1: 直接调用goto_coordinate函数导航到指定坐标
+  // 取消注释下面任意一行来测试：
+  
+  // goto_coordinate(1000.0f, 0.0f);      // 前进到 (1000, 0)
+  // goto_coordinate(500.0f, 500.0f);     // 导航到 (500, 500)
+  // goto_coordinate(-500.0f, 0.0f);      // 后退到 (-500, 0)
+  
+  // 方法2: 使用原始函数
+  // mecanum_goto_position(&mecanum, 1000.0f, 500.0f);
+  
+  // 方法3: 启动自动演示（取消注释下面一行）
+  // navigation_demo();  // 自动导航演示，会依次访问4个点
+  
+  printf(">>> Ready for navigation commands <<<\n");
   
   /* USER CODE END 2 */
 
@@ -147,26 +201,116 @@ can_filter_init();
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /*
-    static uint32_t last_time = 0;
-    static uint8_t demo_state = 0;
     uint32_t current_time = HAL_GetTick();
-    */
     
     // 检测PA0状态
     uint8_t pin_state = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
     HAL_Delay(10); // 确保读取稳定
-    if (pin_state == GPIO_PIN_RESET) // PA0低电平
+    
+    if (pin_state == GPIO_PIN_RESET) // PA0低电平 - 按键按下，彻底停止
     {
-        is_pa0_pressed = 1;// 设置按键按下标志
+        is_pa0_pressed = 1;// 设置按键按下标志，保持停止状态
+    }
+    
+    if (is_pa0_pressed == 1) // 按键曾经被按下过，保持停止状态
+    {
         mecanum_stop(&mecanum); // 停止小车运动
         CAN_cmd_chassis(0, 0, 0, 0); // 发送停止指令
         continue; // 跳过后续逻辑
     }
-    if (is_pa0_pressed == 0)// 处理正常状态下的逻辑
+    
+    // 处理正常状态下的逻辑（只有从未按过按键才会执行）
     {
-      mecanum_move_forward(&mecanum, 1000.0f); // 前进
-
+        // 1米x1米方形路径导航
+        static uint8_t path_step = 0;
+        static uint8_t path_completed = 0;
+        static uint32_t step_timer = 0;
+        
+        // 如果路径已完成，停止运动
+        if (path_completed) {
+            mecanum_stop(&mecanum);
+            CAN_cmd_chassis(0, 0, 0, 0);
+        }
+        else {
+            // 检查是否到达当前目标点或超时（10秒）
+            if (mecanum_is_arrived(&mecanum) || (current_time - step_timer > 10000)) {
+                step_timer = current_time;
+                
+                switch (path_step) {
+                    case 0:
+                        // 第1步：前进到 (1000, 0) - 测试Y轴正方向
+                        goto_coordinate(1000.0f, 0.0f);
+                        printf(">>> Step 1: Moving forward to (1000, 0) <<<\n");
+                        path_step = 1;
+                        break;
+                        
+                    case 1:
+                        // 第2步：测试X轴正方向 - 应该是右移
+                        goto_coordinate(1000.0f, 500.0f);
+                        printf(">>> Step 2: Testing X+ direction to (1000, 500) <<<\n");
+                        path_step = 2;
+                        break;
+                        
+                    case 2:
+                        // 第3步：测试Y轴负方向 - 应该是后退
+                        goto_coordinate(500.0f, 500.0f);
+                        printf(">>> Step 3: Testing Y- direction to (500, 500) <<<\n");
+                        path_step = 3;
+                        break;
+                        
+                    case 3:
+                        // 第4步：测试X轴负方向 - 应该是左移
+                        goto_coordinate(500.0f, 0.0f);
+                        printf(">>> Step 4: Testing X- direction to (500, 0) <<<\n");
+                        path_step = 4;
+                        break;
+                        
+                    case 4:
+                        // 回到原点测试
+                        goto_coordinate(0.0f, 0.0f);
+                        printf(">>> Step 5: Return to origin (0, 0) <<<\n");
+                        path_step = 5;
+                        break;
+                        
+                    case 5:
+                        // 测试完成，停止
+                        mecanum_stop(&mecanum);
+                        CAN_cmd_chassis(0, 0, 0, 0);
+                        path_completed = 1;
+                        printf(">>> Direction test completed! Robot stopped. <<<\n");
+                        break;
+                }
+            }
+        }
+    }
+    
+    // 更新编码器位置反馈
+    int32_t encoder_data[4];
+    for (int i = 0; i < 4; i++) {
+        const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
+        if (motor_data) {
+            encoder_data[i] = motor_data->ecd;
+        }
+    }
+    encoder_position_update(&encoder_position, encoder_data);
+    
+    // 获取当前位置
+    float current_x, current_y, current_angle;
+    encoder_position_get(&encoder_position, &current_x, &current_y, &current_angle);
+    
+    // 处理串口命令
+    command_parser_process(&cmd_parser);
+    
+    // 更新导航控制
+    mecanum_nav_update(&mecanum);
+    
+    // 如果启用了导航演示，继续执行演示
+    // navigation_demo();  // 取消注释这行来启用自动演示
+    
+    // 获取导航状态
+    nav_state_t nav_state = mecanum_nav_get_state(&mecanum);
+    float distance_to_target = mecanum_nav_get_distance_to_target(&mecanum);
+    
     // 更新PID控制
     for (int i = 0; i < 4; i++) 
     {
@@ -174,25 +318,41 @@ can_filter_init();
         const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
         if (motor_data) {
             motor_pid[i].f_cal_pid(&motor_pid[i], motor_data->speed_rpm);
-        }
+        } 
     }
+    
     // 发送电机控制指令
     CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output, motor_pid[2].output, motor_pid[3].output);
     
-    // VOFA绘图数据发送（只在VOFA模式下发送）
-    // 发送8个通道：4个实际速度值 + 4个设定速度值
-    float vofa_data[8];
-    for (int i = 0; i < 4; i++) {
-        vofa_data[i] = (float)get_chassis_motor_measure_point(i)->speed_rpm;     // 实际速度
-        vofa_data[i + 4] = (float)motor_pid[i].target;                          // 设定速度
+    // 每1秒打印一次状态信息
+    static uint32_t print_timer = 0;
+    if (current_time - print_timer > 1000) {
+        print_timer = current_time;
+        
+        printf("=== Robot Status ===\n");
+        printf("Position: X=%.1f, Y=%.1f, Angle=%.2f\n", current_x, current_y, current_angle * 180.0f / 3.14159f);
+        printf("Navigation State: %d, Distance to target: %.1f mm\n", nav_state, distance_to_target);
+        printf("Wheel speeds: [%.0f, %.0f, %.0f, %.0f] rpm\n", 
+               mecanum.wheel_speed[0], mecanum.wheel_speed[1], 
+               mecanum.wheel_speed[2], mecanum.wheel_speed[3]);
+        printf("==================\n");
     }
-    // 发送浮点数组
-    HAL_UART_Transmit(&huart1, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
-    // 发送帧尾
-    unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};
-    HAL_UART_Transmit(&huart1, tail, 4, 100);
-    HAL_Delay(10); // 延迟10毫秒
+    
+    // 示例：检查是否到达目标位置
+    static uint8_t arrival_notified = 0;
+    if (mecanum_is_arrived(&mecanum) && !arrival_notified) {
+        printf(">>> Target position reached! <<<\n");
+        arrival_notified = 1;
     }
+    // 当开始新的导航时重置通知标志
+    static nav_state_t last_nav_state = NAV_IDLE;
+    if (nav_state == NAV_MOVING && last_nav_state != NAV_MOVING) {
+        arrival_notified = 0;
+    }
+    last_nav_state = nav_state;
+    
+    HAL_Delay(10); // 10ms控制周期
+    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -244,71 +404,84 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-// 定时器中断回调，定时发�?�VOFA数据（float格式，VOFA可直接画图）
-//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-//{
-//    if (htim == &htim2)
-//    {
-//        float vofa_data[4];
-//        for (int i = 0; i < 4; i++) {
-//            vofa_data[i] = (float)get_chassis_motor_measure_point(i)->speed_rpm;
-//        }
-//        // 发�??4个float数据到VOFA+
-//        HAL_UART_Transmit(&huart1, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
-//    }
-//}
-//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-//{
-
-//if (htim == (&htim2))
-//{
-//			for(int i=0; i<4; i++)
-//{	
-//  motor_pid[i].target = 1000;
-//		const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);				
-//			motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //根据设定值进行PID计算�?
-//}
-//CAN_cmd_chassis(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
-//}
-//}
-
-
-// ? DMA 发�?�完成回�?
-//void USART1_IRQHandler(void)
-//{
-//    /* TXE 空中�? */
-//    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TXE))
-//    {
-//        if (tx_buf_len > 0)
-//        {
-//            USART1->DR = *tx_buf_ptr++;   // 发�?�一个字�?
-//            tx_buf_len--;
-//        }
-//        else
-//        {
-//            /* 发完了，关闭 TXE 中断，防止一直进中断 */
-//            __HAL_UART_DISABLE_IT(&huart1, UART_IT_TXE);
-//            tx_busy = 0;
-//        }
-//    }
-
-//    /* 如有 RX 中断，可在此处理 */
-//}
-
-// 定时器中断回调，定时发�?�VOFA数据
-/*void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+/**
+  * @brief          简化的坐标导航函数 - 供main函数调用
+  * @param[in]      x: 目标X坐标 (mm)
+  * @param[in]      y: 目标Y坐标 (mm)
+  * @retval         none
+  * @note           这个函数封装了导航功能，直接在main中调用即可
+  */
+void goto_coordinate(float x, float y)
 {
-    if (htim == &htim2)
-    {
-       char buf[100];
-    for (int i = 0; i < 4; i++) {
-        int len = snprintf(buf, sizeof(buf), "M%d:%d\r\n", i, get_chassis_motor_measure_point(i)->speed_rpm);
-        HAL_UART_Transmit(&huart1, (uint8_t *)buf, len, 100);
-   }
-    HAL_Delay(500);
+    printf(">>> Going to position (%.1f, %.1f) mm <<<\n", x, y);
+    mecanum_goto_position(&mecanum, x, y);
+}
+/**
+  * @brief          导航演示函数 - 展示自动导航序列
+  * @retval         none
+  * @note           演示如何使用坐标导航功能
+  */
+void navigation_demo(void)
+{
+    static uint32_t demo_timer = 0;
+    static uint8_t demo_step = 0;
+    static uint8_t demo_enabled = 0;
+    uint32_t current_time = HAL_GetTick();
     
+    // 启动演示（第一次调用时）
+    if (!demo_enabled) {
+        demo_enabled = 1;
+        demo_timer = current_time;
+        printf(">>> Navigation Demo Started <<<\n");
     }
-}*/
+    
+    // 每5秒执行下一步，或者当前任务完成时
+    if ((current_time - demo_timer > 5000) || mecanum_is_arrived(&mecanum)) {
+        demo_timer = current_time;
+        
+        switch (demo_step) {
+            case 0:
+                goto_coordinate(1000.0f, 0.0f);    // 前进1米
+                break;
+            case 1:
+                goto_coordinate(1000.0f, 1000.0f); // 右移1米
+                break;
+            case 2:
+                goto_coordinate(0.0f, 1000.0f);    // 后退1米
+                break;
+            case 3:
+                goto_coordinate(0.0f, 0.0f);       // 左移回原点
+                break;
+            case 4:
+                mecanum_stop_navigation(&mecanum);  // 停止演示
+                printf(">>> Navigation Demo Completed <<<\n");
+                demo_enabled = 0;
+                demo_step = 0;
+                return;
+        }
+        demo_step++;
+    }
+}
+
+/**
+  * @brief          UART接收中断回调函数
+  * @param[in]      huart: UART句柄
+  * @retval         none
+  */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    static uint8_t rx_char;
+    
+    if (huart == &huart1)
+    {
+        // 处理接收到的字符
+        command_parser_input_char(&cmd_parser, rx_char);
+        
+        // 重新启动接收
+        HAL_UART_Receive_IT(&huart1, &rx_char, 1);
+    }
+}
+
 /* USER CODE END 4 */
 
 /**

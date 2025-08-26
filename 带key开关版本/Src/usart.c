@@ -23,7 +23,7 @@
 /* USER CODE BEGIN 0 */
 #include "stdio.h"
 #include "string.h"
-//°üÍ·¶¨Òå
+//ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½
 uint8_t  *tx_buf_ptr  = NULL;
 uint16_t  tx_buf_len  = 0;
 volatile uint8_t tx_busy = 0;
@@ -183,7 +183,7 @@ void UART_DMA_Send(const char *str) {
     // ?? HAL ? DMA ????
     HAL_UART_Transmit_DMA(&huart1, (uint8_t *)str, len);
 }
-/* ·ÅÔÚ usart.c ÖÐ */
+/* ï¿½ï¿½ï¿½ï¿½ usart.c ï¿½ï¿½ */
 void UART1_Send_IT(uint8_t *buf, uint16_t len)
 {
     if (tx_busy) return;
@@ -195,11 +195,11 @@ void UART1_Send_IT(uint8_t *buf, uint16_t len)
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_TXE);
 }
 void UART_Send_VOFA(float *data, uint8_t channel_count) {
-    // ¶¨ÒåÖ¡Î²
+    // ï¿½ï¿½ï¿½ï¿½Ö¡Î²
     const unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};
-    // ·¢ËÍ¸¡µãÊý¾Ý
+    // ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     HAL_UART_Transmit(&huart1, (uint8_t *)data, sizeof(float) * channel_count, HAL_MAX_DELAY);
-    // ·¢ËÍÖ¡Î²
+    // ï¿½ï¿½ï¿½ï¿½Ö¡Î²
     HAL_UART_Transmit(&huart1, (uint8_t *)tail, sizeof(tail), HAL_MAX_DELAY);
 }
 /* USER CODE END 1 */

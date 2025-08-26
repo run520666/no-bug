@@ -46,5 +46,8 @@ can\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdio.h
 can\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdlib.h
 can\main.o: ../bsp/boards/pid.h
 can\main.o: ../application/mecanum_control.h
+can\main.o: ../bsp/boards/pid.h
+can\main.o: ../application/encoder_position.h
+can\main.o: ../application/command_parser.h
 can\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\math.h
 can\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\string.h
