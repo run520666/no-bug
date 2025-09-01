@@ -1,0 +1,10 @@
+can\mecanum_control_1.o: ..\application\mecanum_control.c
+can\mecanum_control_1.o: ..\application\mecanum_control.h
+can\mecanum_control_1.o: ..\application\struct_typedef.h
+can\mecanum_control_1.o: ../bsp/boards/pid.h
+can\mecanum_control_1.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdint.h
+can\mecanum_control_1.o: ..\application\encoder_position.h
+can\mecanum_control_1.o: ..\application\chassis_config.h
+can\mecanum_control_1.o: D:\kile5\ARM\ARMCC\Bin\..\include\math.h
+can\mecanum_control_1.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdlib.h
+can\mecanum_control_1.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdio.h
