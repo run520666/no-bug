@@ -62,11 +62,10 @@ extern TIM_HandleTypeDef htim2;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern UART_HandleTypeDef huart1;
-extern uint8_t  *tx_buf_ptr;
-extern uint16_t  tx_buf_len;
-extern volatile uint8_t tx_busy;
 /* USER CODE BEGIN EV */
-
+extern uint8_t *tx_buf_ptr;
+extern uint16_t tx_buf_len;
+extern volatile uint8_t tx_busy;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -236,10 +235,9 @@ void TIM2_IRQHandler(void)
 /**
   * @brief This function handles USART1 global interrupt.
   */
-
 void USART1_IRQHandler(void)
 {
-    /* USER CODE BEGIN USART1_IRQn 0 */
+  /* USER CODE BEGIN USART1_IRQn 0 */
     if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TXE))
     {
         if (tx_buf_len > 0)
