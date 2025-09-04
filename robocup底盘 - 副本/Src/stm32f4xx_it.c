@@ -46,7 +46,7 @@
 /* USER CODE BEGIN PV */
 // HWT101相关全局变量
 uint8_t g_usart1_receivedata = 0; // 接收数据
-int test = 0;
+    int test = 0;
 // 外部变量声明
 extern mecanum_control_t mecanum;
 //volatile int interrupt_count = 0;  // 全局变量，便于调试

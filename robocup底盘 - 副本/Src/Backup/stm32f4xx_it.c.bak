@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "mecanum_control.h"  
+#include "hwt101.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,10 +45,13 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 // HWT101相关全局变量
-uint8_t Serial_RxPack[100];
-uint8_t Serial_RxFlag = 0;
+uint8_t g_usart1_receivedata = 0; // 接收数据
+int tes
 // 外部变量声明
 extern mecanum_control_t mecanum;
+//volatile int interrupt_count = 0;  // 全局变量，便于调试
+volatile int uart_rx_count = 0;  // 全局变量，便于调试
+uint8_t Serial_RxPack[100];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -241,14 +245,68 @@ void TIM2_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-  static int i=0;
-  i++;
-    if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
-  {
-    uint8_t dummy = (uint8_t)(huart1.Instance->DR & 0xFF);  // 读取数据（必须读取）
-    HAL_GPIO_TogglePin(ledB_GPIO_Port, ledB_Pin);          // 闪烁LED
-    __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);        // 清除标志
-  }
+  /*
+static uint8_t S=0,i=0,sum_juge=0;
+	
+	if(USART_GetFlagStatus(USART1,USART_FLAG_RXNE)==SET)
+	{//每次使用ReceiveData都会自动清除中断标志位
+		uint8_t Rxbyte = USART_ReceiveData(USART1);
+		if(S==0&&Serial_RxFlag==0)/////如果已经读到一个数据但还没使用，那么暂时不用管读到的数据
+		{
+			if(Rxbyte==0x55) 
+			{
+				S=1;
+				sum_juge+=0x55;
+			}
+		}
+		else if(S==1)
+		{
+			if(Rxbyte==0x53) 
+			{
+				S=2;
+				Serial_RxPack[i]=0x53;
+				i++;
+				sum_juge+=0x53;
+			}else //返回状态0
+			{
+				S=0;sum_juge=0;i=0;
+			}
+		}
+		else if(S==2)
+		{
+			if(i!=9)
+			{
+				Serial_RxPack[i]=Rxbyte;
+				sum_juge+=Rxbyte;
+				i++;
+			}else
+			{
+				if(Rxbyte==sum_juge)//校验合格，数据正常
+				{
+					Serial_RxPack[i]=Rxbyte;
+					Serial_RxPack[i+1]='\0';
+					i=0;S=0;sum_juge=0;
+					Serial_RxFlag=1;
+				}else				//校验不合格，舍弃数据
+				{
+					S=0;i=0;sum_juge=0;
+				}
+			}
+		}
+
+	}
+*/
+
+
+//  interrupt_count++;
+//   HAL_GPIO_TogglePin(ledG_GPIO_Port, ledG_Pin);
+//    if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
+//  {
+//     uart_rx_count++;
+//    uint8_t dummy = (uint8_t)(huart1.Instance->DR & 0xFF);  // 读取数据（必须读取）
+//    HAL_GPIO_TogglePin(ledB_GPIO_Port, ledB_Pin);          // 闪烁LED
+//    __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);        // 清除标志
+//  }
     /*
     if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TXE))
     {
@@ -267,13 +325,16 @@ void USART1_IRQHandler(void)
         }
     }
       */
-    /*
-    static uint8_t S=0, i=0, sum_juge=0;
+    
+    // static uint8_t S=0, i=0, sum_juge=0;
   
-  if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
+  /*
+    if(__HAL_UART_GET_FLAG(&huart1, UART_FLAG_RXNE))
    {
+
     uint8_t Rxbyte = (uint8_t)(huart1.Instance->DR & 0xFF);
     HAL_GPIO_TogglePin(ledB_GPIO_Port, ledB_Pin);
+    uart_rx_count++;
 
     // 使用您的原始状态机逻辑
     if(S==0 && Serial_RxFlag==0)
@@ -281,7 +342,8 @@ void USART1_IRQHandler(void)
       if(Rxbyte==0x55) 
       {
         S=1;
-        sum_juge+=0x55;
+        sum_juge=0x55;
+        i=0;
       }
     }
     else if(S==1)
@@ -338,7 +400,8 @@ void USART1_IRQHandler(void)
     
     __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
   }  
-    */ 
+  */  
+   
 
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
@@ -359,6 +422,16 @@ void CAN2_RX0_IRQHandler(void)
   /* USER CODE BEGIN CAN2_RX0_IRQn 1 */
 
   /* USER CODE END CAN2_RX0_IRQn 1 */
+}
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart == &huart1)
+  {
+    test++;
+    hwt101_ReceiveData(g_usart1_receivedata); //调用处理函数
+    HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);//继续进行中断接收
+
+  }
 }
 
 /* USER CODE BEGIN 1 */

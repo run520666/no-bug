@@ -30,34 +30,34 @@ typedef struct _PID_TypeDef
 {
 	PID_ID id;
 	
-	float target;							//Ä¿±êÖµ
+	float target;							//ç›®æ ‡å€¼ï¼ˆç”±éº¦è½®å…¬å¼ç»™å®šï¼‰
+	float measure;						//æµ‹é‡å€¼ï¼ˆåé¦ˆå€¼ï¼‰
+	float err;							//è¯¯å·®
 	float lastNoneZeroTarget;
 	float kp;
 	float ki;
 	float kd;
-	
-	float   measure;					//²âÁ¿Öµ
-	float   err;							//Îó²î
-	float   last_err;      		//ÉÏ´ÎÎó²î
-	
+
+	float   last_err;      		//ä¸Šæ¬¡è¯¯å·®
+
 	float pout;
 	float iout;
 	float dout;
-	
-	float output;						//±¾´ÎÊä³ö
-	float last_output;			//ÉÏ´ÎÊä³ö
-	
-	float MaxOutput;				//Êä³öÏŞ·ù
-	float IntegralLimit;		//»ı·ÖÏŞ·ù
-	float DeadBand;			  //ËÀÇø£¨¾ø¶ÔÖµ£©
-	float ControlPeriod;		//¿ØÖÆÖÜÆÚ
-	float  Max_Err;					//×î´óÎó²î
-	
+
+	float output;						//è¾“å‡º
+	float last_output;			//ä¸Šæ¬¡è¾“å‡º
+
+	float MaxOutput;				//æœ€å¤§è¾“å‡º
+	float IntegralLimit;		//ç§¯åˆ†é™å¹…
+	float DeadBand;			  //æ­»åŒº
+	float ControlPeriod;		//æ§åˆ¶å‘¨æœŸ
+	float  Max_Err;					//æœ€å¤§è¯¯å·®
+
 					  uint32_t thistime;
 					uint32_t lasttime;
-						uint8_t dtime;	
-	
-	void (*f_param_init)(struct _PID_TypeDef *pid,  //PID²ÎÊı³õÊ¼»¯
+						uint8_t dtime;
+
+	void (*f_param_init)(struct _PID_TypeDef *pid,  //PIDå‚æ•°åˆå§‹åŒ–
 				   PID_ID id,
 				   uint16_t maxOutput,
 				   uint16_t integralLimit,
@@ -68,13 +68,40 @@ typedef struct _PID_TypeDef
 				   float kp,
 				   float ki,
 				   float kd);
-				   
-	void (*f_pid_reset)(struct _PID_TypeDef *pid, float kp,float ki, float kd);		//pidÈı¸ö²ÎÊıĞŞ¸Ä
-	float (*f_cal_pid)(struct _PID_TypeDef *pid, float measure);   //pid¼ÆËã
+
+	void (*f_pid_reset)(struct _PID_TypeDef *pid, float kp,float ki, float kd);		//pidå‚æ•°é‡ç½®
+	float (*f_cal_pid)(struct _PID_TypeDef *pid, float measure);   //pidè®¡ç®—
 }PID_TypeDef;
+
+typedef struct
+{
+	float target; //ç›®æ ‡
+	float current; //å®é™…
+	float err; //è¯¯å·®
+	float last_err; //ä¸Šæ¬¡è¯¯å·®
+	float kp,ki,kd; //PIDå‚æ•°
+	float integral; //ç§¯åˆ†å€¼
+	
+	float p_output;
+	float i_output;
+	float d_output;
+	
+	float max_output;
+	float max_integral;
+	
+	float output;
+	uint8_t enable;
+}q_pid;
+extern q_pid angle_pid;
 
 void pid_init(PID_TypeDef* pid);
 #endif
 
 //extern PID_TypeDef pid_pitch;    
 extern PID_TypeDef motor_pid[4];
+extern void pid_init(PID_TypeDef* pid); //pidåˆå§‹åŒ–
+void set_target_angle(float angle); //è®¾ç½®ç›®æ ‡è§’åº¦
+extern void set_angle_pid(float kp, float ki, float kd,float max_out,float max_i); //è®¾ç½®kp,ki,kd,è¾“å‡ºé™å¹…ï¼Œç§¯åˆ†é™å¹…
+extern float angle_controller(void); //è§’åº¦æ§åˆ¶
+extern void angle_controller_init(void); //è§’åº¦æ§åˆ¶åˆå§‹åŒ–
+

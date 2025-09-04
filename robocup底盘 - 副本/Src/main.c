@@ -67,7 +67,7 @@ extern UART_HandleTypeDef huart1;  // 确保你已经在别处定义了这个句
 extern volatile uint8_t uart_tx_done;
 extern void UART1_Send_DMA(uint8_t *buf, uint16_t len);
 extern uint8_t g_usart1_receivedata;
-
+int gd=0;
 
 /* USER CODE END PV */
 
@@ -82,8 +82,8 @@ void UART1_Send_IT(uint8_t *buf, uint16_t len);
 /* USER CODE BEGIN 0 */
   //uint8_t move_mode = 0; // 移动模式标志
   uint8_t pid_flag = 0; // PID标志
-  static uint8_t test_state = 0;  // 0=前进, 1=后退
-static float start_distance = 0.0f;
+//  static uint8_t test_state = 0;  // 0=前进, 1=后退
+// static float start_distance = 0.0f;
 
 /* USER CODE END 0 */
 
@@ -130,6 +130,7 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
 
 
 
+
   // 修改 PID 初始化代码
   for (int i = 0; i < 4; i++) {
     pid_init(&motor_pid[i]);
@@ -140,12 +141,21 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
         //降低参数防止超调：kp=1.5，ki=0.05，kd=0.02，最大输出=2000，积分限幅=300
     motor_pid[i].target = mecanum.wheel_speed[i];
   }
+  angle_controller_init();  
+  set_angle_pid(50.0f, 0.1f, 0.0f, 1500.0f, 200.0f);
+            //设置kp,   ki,   kd,  最大输出，最大积分
+	//p50,output1000
+	//p60.0f, 0.1f, 0.0f, 1500.0f, 200.0f
+  set_target_angle(0.0f);
+  //设置目标角度
+
   
   // 初始化麦克纳姆轮控制
   mecanum_init(&mecanum);
   uint32_t last_switch_time = HAL_GetTick();
 
-  
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -158,17 +168,18 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
     uint32_t current_time = HAL_GetTick();
     */
    // 每秒发送一个字节
-    static uint32_t last_send = 0;
-    if(HAL_GetTick() - last_send > 1000)
-    {
-        uint8_t test_byte = 0x55;
-        HAL_UART_Transmit(&huart1, &test_byte, 1, 100);
-        last_send = HAL_GetTick();
-    }
+
+//    if(HAL_GetTick() - last_send > 1000)
+//    {
+//        uint8_t test_byte = 0x55;
+//        HAL_UART_Transmit(&huart1, &test_byte, 1, 100);
+//        last_send = HAL_GetTick();
+//    }
+		HAL_Delay(100); //等所有东西启动
      if (pid_flag)
       {
         pid_flag = 0;  //清除标志位
-        
+      
         // 在主循环中进行PID计算
         for (int i = 0; i < 4; i++) 
         {
@@ -177,12 +188,15 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
                 motor_pid[i].f_cal_pid(&motor_pid[i], motor_data->speed_rpm);
             }
         }
-    }
+      }
+
+
+    /*
     float distance = mecanum.current_pos.distance;
      float moved_distance = distance - start_distance;
 
      if (test_state == 0) {  // 前进状态
-        if (moved_distance < 1.0f) {
+        if (moved_distance < 5.0f) {
             mecanum_move_forward(&mecanum, 800.0f);
         } else {
             // 前进1米后，准备后退
@@ -190,7 +204,7 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
             start_distance = distance;  // 重新记录起点
         }
     } else {  // 后退状态
-        if (fabsf(moved_distance) < 1.0f) {  // 用绝对值
+        if (fabsf(moved_distance) < 5.0f) {  // 用绝对值
             mecanum_move_backward(&mecanum, 800.0f);
         } else {
             // 后退1米后，准备前进
@@ -198,6 +212,7 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
             start_distance = distance;  // 重新记录起点
         }
     }
+        */
 
      /*
     if(distance < 1.0f)
@@ -330,6 +345,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
        pid_flag = 1; // 设置PID计算标志
     for (int i = 0; i < 4; i++) 
     {
+			mecanum.vx = 1000.0f;                    // 前进速度
+        mecanum.vy = 0.0f;                      // 不侧移
+        mecanum.vw = angle_controller();        // 角度环计算vw保持角度
+         mecanum_calculate_wheel_speed(&mecanum);
         motor_pid[i].target = mecanum.wheel_speed[i];
         const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
         

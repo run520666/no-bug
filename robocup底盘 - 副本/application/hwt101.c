@@ -44,7 +44,7 @@ void hwt101_ReceiveData(uint8_t RxData)
  //              g_roll_jy61 = ((uint16_t) ((uint16_t) RxBuffer[3] << 8 | (uint16_t) RxBuffer[2])) / 32768.0f * 180.0f; //hwt001无
  //              g_pitch_jy61 = ((uint16_t) ((uint16_t) RxBuffer[5] << 8 | (uint16_t) RxBuffer[4])) / 32768.0f * 180.0f; //hwt001无
                 yaw= ((uint16_t) ((uint16_t) RxBuffer[7] << 8 | (uint16_t) RxBuffer[6])) / 32768.0f * 180.0f;
-                mecanum.current_pos.yaw = yaw;
+                set_yaw(yaw);
             }
             RxState = 0;
             RxIndex = 0; //读取完成，回到最初状态，等待包头
@@ -52,3 +52,19 @@ void hwt101_ReceiveData(uint8_t RxData)
     }
 
 }
+
+//设置yaw为0~180 和 -180~0,并且传入麦轮结构体
+void set_yaw(float yaw)
+{
+
+	if (yaw>=180.0f)
+	{
+		yaw = yaw-360.0f;
+	}
+	else
+	{
+		yaw = yaw;
+	}
+    mecanum.current_pos.yaw = yaw;
+}
+

@@ -32,3 +32,5 @@ can\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 can\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 can\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 can\pid.o: ..\bsp\boards\pid.h
+can\pid.o: ../application/mecanum_control.h
+can\pid.o: ../application/struct_typedef.h

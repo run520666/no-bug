@@ -66,6 +66,7 @@ extern TIM_HandleTypeDef htim2;
 extern UART_HandleTypeDef huart1;  // 确保你已经在别处定义了这个句�?
 extern volatile uint8_t uart_tx_done;
 extern void UART1_Send_DMA(uint8_t *buf, uint16_t len);
+extern uint8_t g_usart1_receivedata;
 
 
 /* USER CODE END PV */
@@ -125,7 +126,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 HAL_TIM_Base_Start_IT(&htim2);
 can_filter_init();
-__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
 
 
 

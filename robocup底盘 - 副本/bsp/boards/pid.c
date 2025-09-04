@@ -4,9 +4,9 @@
   * @author  Ginger
   * @version V1.0.0
   * @date    2015/11/14
-  * @brief   ��ÿһ��pid�ṹ�嶼Ҫ�Ƚ��к��������ӣ��ٽ��г�ʼ��
+  * @brief   ??PID?????????PID?????????????????????????
   ******************************************************************************
-  * @attention Ӧ�����ö��ײ��?(d)��̨������ȶ�?
+  * @attention ?????????????
   *
   ******************************************************************************
   */
@@ -15,31 +15,38 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
 #include "pid.h"
+#include "mecanum_control.h"
+extern mecanum_control_t mecanum;
+q_pid angle_pid;
 
 
-#define ABS(x)		((x>0)? x: -x) 
+#define ABS(x)		((x>0)? x: -x)   // ??????
 
+// PID???????
 PID_TypeDef pid_pitch,pid_pithch_speed,pid_roll,pid_roll_speed,pid_yaw_speed;
 extern int isMove;
 
-/*������ʼ��--------------------------------------------------------------*/
-static void pid_param_init(
-	PID_TypeDef * pid, 
-	PID_ID   id,
-	uint16_t maxout,
-	uint16_t intergral_limit,
-	float deadband,
-	uint16_t period,
-	int16_t  max_err,   // 允�?�的最大�??�?（用于保护或报�?�）
-	int16_t  target,
+// PID???????
+static void pid_param_init
+(
+		PID_TypeDef * pid, 
+		PID_ID   id,
+		uint16_t maxout,
+		uint16_t intergral_limit,
+		float deadband,
+		uint16_t period,
+		int16_t  max_err,   // ????
+		int16_t  target,
 
-	float 	kp, 
-	float 	ki, 
-	float 	kd)
+		float 	kp, 
+		float 	ki, 
+		float 	kd
+)
+
 {
 	pid->id = id;		
 	
-	pid->ControlPeriod = period;             //û�õ�
+	pid->ControlPeriod = period;             // ????(??)
 	pid->DeadBand = deadband;
 	pid->IntegralLimit = intergral_limit;
 	pid->MaxOutput = maxout;
@@ -53,7 +60,7 @@ static void pid_param_init(
 	pid->output = 0;
 }
 
-/*��;���Ĳ����趨--------------------------------------------------------------*/
+// PID??????
 static void pid_reset(PID_TypeDef * pid, float kp, float ki, float kd)
 {
 	pid->kp = kp;
@@ -61,9 +68,7 @@ static void pid_reset(PID_TypeDef * pid, float kp, float ki, float kd)
 	pid->kd = kd;
 }
 
-/*pid����-----------------------------------------------------------------------*/
-
-	
+// PID??????
 static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 {
 //	uint32_t time,lasttime;
@@ -79,7 +84,7 @@ static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 	
 	pid->err = pid->target - pid->measure;
 	
-	//�Ƿ��������?
+	// ??????????
 	if((ABS(pid->err) > pid->DeadBand))
 	{
 		pid->pout = pid->kp * pid->err;
@@ -88,17 +93,17 @@ static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 
 		pid->dout =  pid->kd * (pid->err - pid->last_err); 
 		
-		//�����Ƿ񳬳�����
+		// ??????????
 		if(pid->iout > pid->IntegralLimit)
 			pid->iout = pid->IntegralLimit;
 		if(pid->iout < - pid->IntegralLimit)
 			pid->iout = - pid->IntegralLimit;
 		
-		//pid�����?
+		// PID????
 		pid->output = pid->pout + pid->iout + pid->dout;
 		
 
-		//pid->output = pid->output*0.7f + pid->last_output*0.3f;  //滤波
+		//pid->output = pid->output*0.7f + pid->last_output*0.3f;  // ????
 		if(pid->output > pid->MaxOutput)         
 		{
 			pid->output = pid->MaxOutput;
@@ -107,7 +112,7 @@ static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 		{
 			pid->output = -(pid->MaxOutput);
 		}
-		// 死区补偿：输出不�?0但绝对值小�?100时，强制输出±100
+		// 死区补偿：输出在0但绝对值超过100时，强制输出±30
 		if(pid->output > 0 && pid->output < 100)
 			pid->output = 30;
 		else if(pid->output < 0 && pid->output > -100)
@@ -118,10 +123,113 @@ static float pid_calculate(PID_TypeDef* pid, float measure)//, int16_t target)
 	return pid->output;
 }
 
-/*pid�ṹ���ʼ����ÿһ��pid������Ҫ����һ��-----------------------------------------------------*/
+// PID初始化
 void pid_init(PID_TypeDef* pid)
 {
 	pid->f_param_init = pid_param_init;
 	pid->f_pid_reset = pid_reset;
 	pid->f_cal_pid = pid_calculate;
 }
+
+//设置误差-180~180
+float set_error(float target, float current)
+{
+	float error = target - current;
+	 while(error > 180.0f) {
+        error -= 360.0f;
+    }
+    while(error < -180.0f) {
+        error += 360.0f;
+    }
+    return error;
+}
+
+//设置目标角度-180~180
+void set_target_angle(float angle)
+{
+    // 将角度限制在-180到180之间
+    while(angle > 180.0f) angle -= 360.0f;
+    while(angle <= -180.0f) angle += 360.0f;
+
+    angle_pid.target = angle;
+}
+
+//pid初始化
+void angle_controller_init(void)
+{
+    angle_pid.target = 0.0f;      // ??????0?
+    angle_pid.kp = 3.0f;                // ????
+    angle_pid.ki = 0.1f;                // ????
+    angle_pid.kd = 0.5f;                // ????
+
+    angle_pid.last_err = 0.0f;        // ????
+    angle_pid.integral = 0.0f;          // ????
+    angle_pid.max_output = 80.0f;      // ???????
+    angle_pid.max_integral = 100.0f;    // ????
+    angle_pid.enable = 1;               // ????
+}
+
+//设置PID参数
+void set_angle_pid(float kp, float ki, float kd,float max_out,float max_i) //设置kp,ki,kd,输出限幅，积分限幅
+{
+	angle_pid.kp = kp;
+	angle_pid.ki = ki;
+	angle_pid.kd = kd;
+	angle_pid.max_output = max_out;
+	angle_pid.max_integral = max_i;
+}
+float angle_controller(void)
+{ 
+	if(!angle_pid.enable) {
+        return 0.0f;
+    } //如果未使能，返回0
+	float current_yaw = mecanum.current_pos.yaw; //获取yaw角
+	angle_pid.current = current_yaw;  // 记录当前yaw角
+    angle_pid.err = set_error(angle_pid.target, current_yaw); //计算当前误差
+
+	float p_output = angle_pid.kp * angle_pid.err; //比例项
+	angle_pid.p_output=p_output;
+
+	angle_pid.integral += angle_pid.err; //积分
+    if(angle_pid.integral > angle_pid.max_integral) //积分限幅
+	{
+        angle_pid.integral = angle_pid.max_integral;
+    } 
+	else if(angle_pid.integral < -angle_pid.max_integral)
+	 {
+        angle_pid.integral = -angle_pid.max_integral;
+    }
+
+	float i_output = angle_pid.ki * angle_pid.integral; //积分项
+	angle_pid.i_output=i_output;
+    float d_output = angle_pid.kd * (angle_pid.err - angle_pid.last_err); //微分项
+	angle_pid.d_output=d_output;
+
+    float output = p_output + i_output + d_output; //总输出
+
+    if(output > angle_pid.max_output) // 输出限幅
+	{
+        output = angle_pid.max_output;
+    } else if(output < -angle_pid.max_output)
+	 {
+        output = -angle_pid.max_output;
+    }
+    
+    angle_pid.output = output;  //  保存输出到结构体
+    angle_pid.last_err = angle_pid.err;  //  保存当前误差到上次误差
+
+
+    return output;
+}
+
+
+
+
+
+
+
+
+
+
+
+
