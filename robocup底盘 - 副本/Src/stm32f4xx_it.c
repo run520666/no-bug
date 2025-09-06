@@ -49,8 +49,8 @@ uint8_t g_usart1_receivedata = 0; // 接收数据
     int test = 0;
 // 外部变量声明
 extern mecanum_control_t mecanum;
-//volatile int interrupt_count = 0;  // 全局变量，便于调试
-volatile int uart_rx_count = 0;  // 全局变量，便于调试
+//volatile int interrupt_count = 0;  // 全局变量，便于调�?
+volatile int uart_rx_count = 0;  // 全局变量，便于调�?
 uint8_t Serial_RxPack[100];
 /* USER CODE END PV */
 
@@ -67,6 +67,7 @@ uint8_t Serial_RxPack[100];
 /* External variables --------------------------------------------------------*/
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
+extern I2C_HandleTypeDef hi2c1;
 extern TIM_HandleTypeDef htim2;
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
@@ -240,6 +241,34 @@ void TIM2_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles I2C1 event interrupt.
+  */
+void I2C1_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+
+  /* USER CODE END I2C1_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+
+  /* USER CODE END I2C1_EV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C1 error interrupt.
+  */
+void I2C1_ER_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+
+  /* USER CODE END I2C1_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+
+  /* USER CODE END I2C1_ER_IRQn 1 */
+}
+
+/**
   * @brief This function handles USART1 global interrupt.
   */
 void USART1_IRQHandler(void)
@@ -249,9 +278,9 @@ void USART1_IRQHandler(void)
 static uint8_t S=0,i=0,sum_juge=0;
 	
 	if(USART_GetFlagStatus(USART1,USART_FLAG_RXNE)==SET)
-	{//每次使用ReceiveData都会自动清除中断标志位
+	{//每次使用ReceiveData都会自动清除中断标志�?
 		uint8_t Rxbyte = USART_ReceiveData(USART1);
-		if(S==0&&Serial_RxFlag==0)/////如果已经读到一个数据但还没使用，那么暂时不用管读到的数据
+		if(S==0&&Serial_RxFlag==0)/////如果已经读到�?个数据但还没使用，那么暂时不用管读到的数�?
 		{
 			if(Rxbyte==0x55) 
 			{
@@ -267,7 +296,7 @@ static uint8_t S=0,i=0,sum_juge=0;
 				Serial_RxPack[i]=0x53;
 				i++;
 				sum_juge+=0x53;
-			}else //返回状态0
+			}else //返回状�??0
 			{
 				S=0;sum_juge=0;i=0;
 			}
@@ -281,7 +310,7 @@ static uint8_t S=0,i=0,sum_juge=0;
 				i++;
 			}else
 			{
-				if(Rxbyte==sum_juge)//校验合格，数据正常
+				if(Rxbyte==sum_juge)//校验合格，数据正�?
 				{
 					Serial_RxPack[i]=Rxbyte;
 					Serial_RxPack[i+1]='\0';
@@ -336,7 +365,7 @@ static uint8_t S=0,i=0,sum_juge=0;
     HAL_GPIO_TogglePin(ledB_GPIO_Port, ledB_Pin);
     uart_rx_count++;
 
-    // 使用您的原始状态机逻辑
+    // 使用您的原始状�?�机逻辑
     if(S==0 && Serial_RxFlag==0)
     {
       if(Rxbyte==0x55) 
@@ -368,25 +397,25 @@ static uint8_t S=0,i=0,sum_juge=0;
         i++;
       }else
       {
-        if(Rxbyte==sum_juge) // 校验合格，数据正常
+        if(Rxbyte==sum_juge) // 校验合格，数据正�?
         {
           Serial_RxPack[i]=Rxbyte;
           Serial_RxPack[i+1]='\0';
           
-          // 解析yaw数据并存储到mecanum结构体
+          // 解析yaw数据并存储到mecanum结构�?
           uint8_t YawL = Serial_RxPack[5];  // 偏航角低字节
           uint8_t YawH = Serial_RxPack[6];  // 偏航角高字节
           
           short yaw_raw = (short)((short)YawH << 8 | YawL);
           fp32 yaw_degree = (fp32)yaw_raw / 32768.0f * 180.0f;
           
-          // 转换为0~359度范围（保持您的原始逻辑）
+          // 转换�?0~359度范围（保持您的原始逻辑�?
           if(yaw_degree >= -179.0f && yaw_degree <= -1.0f) 
               yaw_degree += 359.0f;
           if(yaw_degree < 0.0f)
               yaw_degree += 360.0f;
               
-          // 直接存储到mecanum结构体
+          // 直接存储到mecanum结构�?
           mecanum.current_pos.yaw = yaw_degree;
           
           i=0;S=0;sum_juge=0;
@@ -423,18 +452,7 @@ void CAN2_RX0_IRQHandler(void)
 
   /* USER CODE END CAN2_RX0_IRQn 1 */
 }
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  if (huart == &huart1)
-  {
-    test++;
-    hwt101_ReceiveData(g_usart1_receivedata); //调用处理函数
-    HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);//继续进行中断接收
-
-  }
-}
 
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

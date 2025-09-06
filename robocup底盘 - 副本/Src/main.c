@@ -17,10 +17,10 @@
 ******************************************************************************
 */
 /* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "can.h"
+#include "i2c.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -37,6 +37,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "i2c_stm32_arduino.c" // 添加I2C通信示例声明
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,10 +48,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define WHEEL_FR 0  // 右前�?
-#define WHEEL_FL 1  // 左前�?
-#define WHEEL_BL 2  // 左后�?
-#define WHEEL_BR 3  // 右后�?
+#define WHEEL_FR 0  // 右前�??
+#define WHEEL_FL 1  // 左前�??
+#define WHEEL_BL 2  // 左后�??
+#define WHEEL_BR 3  // 右后�??
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -63,7 +65,7 @@
 PID_TypeDef motor_pid[4];
 char tx_buffer[1000];
 extern TIM_HandleTypeDef htim2;
-extern UART_HandleTypeDef huart1;  // 确保你已经在别处定义了这个句�?
+extern UART_HandleTypeDef huart1;  // 确保你已经在别处定义了这个句�??
 extern volatile uint8_t uart_tx_done;
 extern void UART1_Send_DMA(uint8_t *buf, uint16_t len);
 extern uint8_t g_usart1_receivedata;
@@ -82,7 +84,7 @@ void UART1_Send_IT(uint8_t *buf, uint16_t len);
 /* USER CODE BEGIN 0 */
   //uint8_t move_mode = 0; // 移动模式标志
   uint8_t pid_flag = 0; // PID标志
-//  static uint8_t test_state = 0;  // 0=前进, 1=后退
+//  static uint8_t test_state = 0;  // 0=前进, 1=后�??
 // static float start_distance = 0.0f;
 
 /* USER CODE END 0 */
@@ -123,6 +125,7 @@ int main(void)
   MX_CAN2_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 HAL_TIM_Base_Start_IT(&htim2);
 can_filter_init();
@@ -131,19 +134,19 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
 
 
 
-  // 修改 PID 初始化代码
+  // 修改 PID 初始化代�?
   for (int i = 0; i < 4; i++) {
     pid_init(&motor_pid[i]);
     motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 2000, 300, 10, 10, 2000, 500, 1.5, 0.05, 0.02);    
-        // PID模式（位置或速度）、最大输出、积分限幅、死区（绝对值）、控制周期、最大误差、目标值、kp、ki、kd）
-        //开始版本kp=2.5，ki=0.1
+        // PID模式（位置或速度）�?�最大输出�?�积分限幅�?�死区（绝对值）、控制周期�?�最大误差�?�目标�?��?�kp、ki、kd�?
+        //�?始版本kp=2.5，ki=0.1
         //初步调试kp=3.7，ki=0.1，kd=0.05
-        //降低参数防止超调：kp=1.5，ki=0.05，kd=0.02，最大输出=2000，积分限幅=300
+        //降低参数防止超调：kp=1.5，ki=0.05，kd=0.02，最大输�?=2000，积分限�?=300
     motor_pid[i].target = mecanum.wheel_speed[i];
   }
   angle_controller_init();  
   set_angle_pid(50.0f, 0.1f, 0.0f, 1500.0f, 200.0f);
-            //设置kp,   ki,   kd,  最大输出，最大积分
+            //设置kp,   ki,   kd,  �?大输出，�?大积�?
 	//p50,output1000
 	//p60.0f, 0.1f, 0.0f, 1500.0f, 200.0f
   set_target_angle(0.0f);
@@ -167,7 +170,7 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
     static uint8_t demo_state = 0;
     uint32_t current_time = HAL_GetTick();
     */
-   // 每秒发送一个字节
+   // 每秒发�?�一个字�?
 
 //    if(HAL_GetTick() - last_send > 1000)
 //    {
@@ -175,10 +178,10 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
 //        HAL_UART_Transmit(&huart1, &test_byte, 1, 100);
 //        last_send = HAL_GetTick();
 //    }
-		HAL_Delay(100); //等所有东西启动
+		HAL_Delay(100); //等所有东西启�?
      if (pid_flag)
       {
-        pid_flag = 0;  //清除标志位
+        pid_flag = 0;  //清除标志�?
       
         // 在主循环中进行PID计算
         for (int i = 0; i < 4; i++) 
@@ -191,23 +194,26 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
       }
 
 
+
+  // 每隔100ms进行一次I2C通信示例
+  I2C_Arduino_Example();
     /*
     float distance = mecanum.current_pos.distance;
      float moved_distance = distance - start_distance;
 
-     if (test_state == 0) {  // 前进状态
+     if (test_state == 0) {  // 前进状�??
         if (moved_distance < 5.0f) {
             mecanum_move_forward(&mecanum, 800.0f);
         } else {
-            // 前进1米后，准备后退
+            // 前进1米后，准备后�?
             test_state = 1;
             start_distance = distance;  // 重新记录起点
         }
-    } else {  // 后退状态
-        if (fabsf(moved_distance) < 5.0f) {  // 用绝对值
+    } else {  // 后�??状�??
+        if (fabsf(moved_distance) < 5.0f) {  // 用绝对�??
             mecanum_move_backward(&mecanum, 800.0f);
         } else {
-            // 后退1米后，准备前进
+            // 后�??1米后，准备前�?
             test_state = 0;
             start_distance = distance;  // 重新记录起点
         }
@@ -234,7 +240,7 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
             mecanum_move_forward(&mecanum, 800.0f); // 前进
             break;
         case 1:
-            mecanum_move_backward(&mecanum, 800.0f); // 后退
+            mecanum_move_backward(&mecanum, 800.0f); // 后�??
             break;
         case 2:
             mecanum_move_left(&mecanum, 800.0f); // 左移
@@ -251,7 +257,7 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
     }
 		*/
       
-    // 发送电机控制指令（从定时器中断移回主循环）
+    // 发�?�电机控制指令（从定时器中断移回主循环）
    
     
     // 更新PID控制
@@ -264,21 +270,21 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
             motor_pid[i].f_cal_pid(&motor_pid[i], motor_data->speed_rpm);
         }
     }
-    // 发送电机控制指令
+    // 发�?�电机控制指�?
     CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output, motor_pid[2].output, motor_pid[3].output);
     HAL_Delay(10);
     */
     /*
-    // VOFA绘图数据发送（只在VOFA模式下发送）
-    // 发送8个通道：4个实际速度值 + 4个设定速度值
+    // VOFA绘图数据发�?�（只在VOFA模式下发送）
+    // 发�??8个�?�道�?4个实际�?�度�? + 4个设定�?�度�?
     float vofa_data[8];
     for (int i = 0; i < 4; i++) {
         vofa_data[i] = (float)get_chassis_motor_measure_point(i)->speed_rpm;     // 实际速度
         vofa_data[i + 4] = (float)motor_pid[i].target;                          // 设定速度
     }
-    // 发送浮点数组
+    // 发�?�浮点数�?
     HAL_UART_Transmit(&huart1, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
-    // 发送帧尾
+    // 发�?�帧�?
     unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};
     HAL_UART_Transmit(&huart1, tail, 4, 100);
     HAL_Delay(10); // 延迟10毫秒
@@ -303,7 +309,9 @@ void SystemClock_Config(void)
   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-  /** Initializes the CPU, AHB and APB busses clocks
+
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -317,7 +325,8 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks
+
+  /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -346,7 +355,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     for (int i = 0; i < 4; i++) 
     {
 			mecanum.vx = 1000.0f;                    // 前进速度
-        mecanum.vy = 0.0f;                      // 不侧移
+        mecanum.vy = 0.0f;                      // 不侧�?
         mecanum.vw = angle_controller();        // 角度环计算vw保持角度
          mecanum_calculate_wheel_speed(&mecanum);
         motor_pid[i].target = mecanum.wheel_speed[i];
@@ -386,22 +395,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //{	
 //  motor_pid[i].target = 1000;
 //		const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);				
-//			motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //根据设定值进行PID计算�?
+//			motor_pid[i].f_cal_pid(&motor_pid[i],motor_data->speed_rpm);    //根据设定值进行PID计算�??
 //}
 //CAN_cmd_chassis(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
 //}
 //}
 
 
-// ? DMA 发�?�完成回�?
+// ? DMA 发�?�完成回�??
 //void USART1_IRQHandler(void)
 //{
-//    /* TXE 空中�? */
+//    /* TXE 空中�?? */
 //    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_TXE))
 //    {
 //        if (tx_buf_len > 0)
 //        {
-//            USART1->DR = *tx_buf_ptr++;   // 发�?�一个字�?
+//            USART1->DR = *tx_buf_ptr++;   // 发�?�一个字�??
 //            tx_buf_len--;
 //        }
 //        else
@@ -459,5 +468,3 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
