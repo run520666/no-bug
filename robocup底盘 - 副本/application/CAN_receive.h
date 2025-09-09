@@ -42,6 +42,8 @@ typedef enum
 
 } can_msg_id_e;
 
+extern void mecanum_ecd_distance(mecanum_control_t *mecanum_control);//±àÂëÆ÷¾àÀë¼ÆËã
+
 //rm motor data
 typedef struct
 {

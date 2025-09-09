@@ -2,6 +2,8 @@ can\can_receive.o: ..\application\CAN_receive.c
 can\can_receive.o: ..\application\CAN_receive.h
 can\can_receive.o: ..\application\struct_typedef.h
 can\can_receive.o: ..\application\mecanum_control.h
+can\can_receive.o: ../bsp/boards/pid.h
+can\can_receive.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdint.h
 can\can_receive.o: ../Inc/main.h
 can\can_receive.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 can\can_receive.o: ../Inc/stm32f4xx_hal_conf.h
@@ -10,7 +12,6 @@ can\can_receive.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 can\can_receive.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 can\can_receive.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 can\can_receive.o: ../Drivers/CMSIS/Include/core_cm4.h
-can\can_receive.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdint.h
 can\can_receive.o: ../Drivers/CMSIS/Include/cmsis_version.h
 can\can_receive.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 can\can_receive.o: ../Drivers/CMSIS/Include/cmsis_armcc.h

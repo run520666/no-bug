@@ -1,12 +1,2 @@
-*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\kile5\ARM\ARMCC\Bin'
-Build target 'can'
-compiling main.c...
-../Src/main.c(85): warning:  #177-D: variable "test_state"  was declared but never referenced
-    static uint8_t test_state = 0;  // 0=前进, 1=后退
-../Src/main.c(86): warning:  #177-D: variable "start_distance"  was declared but never referenced
-  static float start_distance = 0.0f;
-../Src/main.c: 2 warnings, 0 errors
-linking...
-Program Size: Code=12296 RO-data=448 RW-data=76 ZI-data=3388  
-"can\can.axf" - 0 Error(s), 2 Warning(s).
-Build Time Elapsed:  00:00:05
+Load "can\\can.axf" 
+Erase Done.Programming Done.Verify OK.Flash Load finished at 22:34:50

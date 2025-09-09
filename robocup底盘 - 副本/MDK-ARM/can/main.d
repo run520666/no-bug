@@ -41,6 +41,7 @@ can\main.o: ../bsp/boards/bsp_can.h
 can\main.o: ../application/struct_typedef.h
 can\main.o: ../application/CAN_receive.h
 can\main.o: ../application/mecanum_control.h
+can\main.o: ../bsp/boards/pid.h
 can\main.o: ../application/ps2.h
 can\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdio.h
 can\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdlib.h

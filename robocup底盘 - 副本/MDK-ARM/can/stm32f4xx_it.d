@@ -34,5 +34,6 @@ can\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 can\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 can\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h
 can\stm32f4xx_it.o: ../application/mecanum_control.h
+can\stm32f4xx_it.o: ../bsp/boards/pid.h
 can\stm32f4xx_it.o: ../application/struct_typedef.h
 can\stm32f4xx_it.o: ../application/hwt101.h

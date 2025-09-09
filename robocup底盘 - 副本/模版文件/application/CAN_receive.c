@@ -85,6 +85,64 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         }
     }
 }
+void mecanum_ecd_distance(mecanum_control_t *mecanum_control)
+{
+    if (mecanum_control == NULL)
+    {
+        return;
+    }
+  float abs_wheel_distance_sum = 0.0f;
+    for(int i=0; i<4; i++)//四个电机处理
+    {
+        const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
+        if (motor_data == NULL) continue; //空指针处理
+
+        uint16_t ecd = motor_data->ecd; //更新编码器值
+        uint16_t last_ecd = mecanum_control->last_ecd[i]; //上次编码器值
+
+        int32_t delta_ecd; //编码器变化量
+         int32_t diff = (int32_t)ecd - (int32_t)last_ecd;
+        
+        // 处理C620编码器溢出 (0-8191)
+        if (diff > 4096) {
+            delta_ecd = diff - 8192;  // 反向溢出（电机反转时，编码器由小值变大值）
+        } 
+        else if (diff < -4096) {
+            delta_ecd = diff + 8192;  // 正向溢出
+        } 
+        else {
+            delta_ecd = diff;         // 正常情况
+        }
+        
+        // 过滤异常大的跳变
+        if (abs(delta_ecd) > MAX_ECD_DELTA) {
+            continue; // 跳过异常数据
+        }
+        
+        // 更新上次编码器值
+        mecanum_control->last_ecd[i] = ecd;
+        
+        // 计算实际轮子移动距离 (米)
+        // M2006距离计算: (编码器变化量 / 编码器分辨率) / 减速比 * 轮子周长
+        float wheel_distance = ((float)delta_ecd / M2006_ENCODER_RES) / M2006_GEAR_RATIO * WHEEL_CIRCUMFERENCE;
+        abs_wheel_distance_sum += fabsf(wheel_distance);
+        mecanum_control->total_wheel_distance[i] += wheel_distance;
+
+    }
+    
+    // 计算底盘平均移动距离
+    float chassis_distance = abs_wheel_distance_sum / 4.0f;
+    
+    // 累加到总距离
+    mecanum_control->current_pos.distance += chassis_distance; //更新到麦轮结构体
+    
+    // 如果有朝向角，分解到x/y轴
+    /*
+    float angle_rad = mecanum_control->current_pos.angle * M_PI / 180.0f;
+    mecanum_control->current_pos.x += chassis_distance * cosf(angle_rad);
+    mecanum_control->current_pos.y += chassis_distance * sinf(angle_rad);
+    */
+}
 
 
 

@@ -88,11 +88,14 @@ typedef struct
 	
 	float max_output;
 	float max_integral;
+	float deadband; //死区
 	
 	float output;
 	uint8_t enable;
+	
 }q_pid;
 extern q_pid angle_pid;
+extern q_pid speed_pid[4];
 
 void pid_init(PID_TypeDef* pid);
 #endif
@@ -100,7 +103,14 @@ void pid_init(PID_TypeDef* pid);
 //extern PID_TypeDef pid_pitch;    
 extern PID_TypeDef motor_pid[4];
 extern void pid_init(PID_TypeDef* pid); //pid初始化
-void set_target_angle(float angle); //设置目标角度
+
+//速度环
+extern void speed_pid_init(q_pid *speed_pid); //速度环初始化
+extern void set_speed_pid(q_pid *speed_pid,float kp, float ki, float kd,float max_out,float max_i,float deadband); //设置速度环参数
+extern void speed_pid_control(q_pid *speed_pid, float target_speed, float current_speed); //速度环控制
+
+//角度环
+extern void set_target_angle(float angle); //设置目标角度
 extern void set_angle_pid(float kp, float ki, float kd,float max_out,float max_i); //设置kp,ki,kd,输出限幅，积分限幅
 extern float angle_controller(void); //角度控制
 extern void angle_controller_init(void); //角度控制初始化

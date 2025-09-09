@@ -421,20 +421,18 @@ void CAN2_RX0_IRQHandler(void)
   HAL_CAN_IRQHandler(&hcan2);
   /* USER CODE BEGIN CAN2_RX0_IRQn 1 */
 
+
   /* USER CODE END CAN2_RX0_IRQn 1 */
 }
+
+/* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   if (huart == &huart1)
   {
-    test++;
-    hwt101_ReceiveData(g_usart1_receivedata); //调用处理函数
+    hwt101_ReceiveData(g_usart1_receivedata); //调用处理函数，存入了麦轮结构体
     HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);//继续进行中断接收
-
   }
 }
-
-/* USER CODE BEGIN 1 */
-
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

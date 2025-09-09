@@ -8,8 +8,8 @@
 #define M2006_GEAR_RATIO        36.0f        // C620 减速比
 
 //麦轮 参数
-#define WHEEL_DIAMETER          0.095f          // 轮子直径 95mm (转换为米)
-#define WHEEL_CIRCUMFERENCE     (3.14159f * WHEEL_DIAMETER)  // 轮子周长 ≈ 0.298m
+#define WHEEL_DIAMETER          95.0f          // 轮子直径 95mm 
+#define WHEEL_CIRCUMFERENCE     (3.1415f * WHEEL_DIAMETER)  // 轮子周长 ≈ 298mm
 
 //编码器处理
 #define MAX_ECD_DELTA           4096            // 最大合理编码器变化量

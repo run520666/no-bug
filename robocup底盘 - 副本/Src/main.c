@@ -67,6 +67,7 @@ extern UART_HandleTypeDef huart1;  // 确保你已经在别处定义了这个句
 extern volatile uint8_t uart_tx_done;
 extern void UART1_Send_DMA(uint8_t *buf, uint16_t len);
 extern uint8_t g_usart1_receivedata;
+extern q_pid speed_pid[4];
 int gd=0;
 
 /* USER CODE END PV */
@@ -81,7 +82,8 @@ void UART1_Send_IT(uint8_t *buf, uint16_t len);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
   //uint8_t move_mode = 0; // 移动模式标志
-  uint8_t pid_flag = 0; // PID标志
+volatile uint8_t pid_flag = 0; // PID标志
+volatile uint8_t stop=1; // 停止标志
 //  static uint8_t test_state = 0;  // 0=前进, 1=后退
 // static float start_distance = 0.0f;
 
@@ -132,27 +134,39 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
 
 
   // 修改 PID 初始化代码
-  for (int i = 0; i < 4; i++) {
-    pid_init(&motor_pid[i]);
-    motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 2000, 300, 10, 10, 2000, 500, 1.5, 0.05, 0.02);    
-        // PID模式（位置或速度）、最大输出、积分限幅、死区（绝对值）、控制周期、最大误差、目标值、kp、ki、kd）
-        //开始版本kp=2.5，ki=0.1
-        //初步调试kp=3.7，ki=0.1，kd=0.05
-        //降低参数防止超调：kp=1.5，ki=0.05，kd=0.02，最大输出=2000，积分限幅=300
-    motor_pid[i].target = mecanum.wheel_speed[i];
-  }
+//  for (int i = 0; i < 4; i++) {
+//    pid_init(&motor_pid[i]);
+//    motor_pid[i].f_param_init(&motor_pid[i], PID_Speed, 2000, 300, 10, 10, 2000, 500, 1.5, 0.05, 0.02);    
+//        // PID模式（位置或速度）、最大输出、积分限幅、死区（绝对值）、控制周期、最大误差、目标值、kp、ki、kd）
+//        //开始版本kp=2.5，ki=0.1
+//        //初步调试kp=3.7，ki=0.1，kd=0.05
+//        //降低参数防止超调：kp=1.5，ki=0.05，kd=0.02，最大输出=2000，积分限幅=300
+//    motor_pid[i].target = mecanum.wheel_speed[i];
+//  }
+for (int i = 0; i < 4; i++)
+{ 
+  speed_pid_init(&speed_pid[i]);
+  set_speed_pid(&speed_pid[i], 1.5f, 0.4f, 0.2f, 2500.0f, 300.0f,10.0f);
+                           //设置kp,   ki,    kd, 最大输出，最大积分， 死区
+	                        //初调kp=5.5,ki=0.4,kd=0.2,最大输出2500，积分300，死区10
+  speed_pid[i].target = 0.0f; // 初始目标速度为0
+
+}
+ 
+
   angle_controller_init();  
   set_angle_pid(50.0f, 0.1f, 0.0f, 1500.0f, 200.0f);
             //设置kp,   ki,   kd,  最大输出，最大积分
 	//p50,output1000
 	//p60.0f, 0.1f, 0.0f, 1500.0f, 200.0f
-  set_target_angle(0.0f);
+  //set_target_angle(0.0f);
   //设置目标角度
 
   
   // 初始化麦克纳姆轮控制
   mecanum_init(&mecanum);
   uint32_t last_switch_time = HAL_GetTick();
+  HAL_Delay(500); // 等待系统稳定
 
 
 
@@ -175,7 +189,32 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
 //        HAL_UART_Transmit(&huart1, &test_byte, 1, 100);
 //        last_send = HAL_GetTick();
 //    }
-		HAL_Delay(100); //等所有东西启动
+//HAL_Delay(500);
+//mecanum_move_forward(&mecanum, 800.0f); // 前进
+//HAL_Delay(2000);
+//mecanum_move_left(&mecanum, 800.0f);
+//HAL_Delay(2000);
+//mecanum_move_backward(&mecanum, 800.0f);
+//HAL_Delay(2000);
+//mecanum_move_right(&mecanum, 800.0f);
+//HAL_Delay(2000);
+set_target_move_to_target(&mecanum,340.0f,0.0f,0.0f,1000.0f);  //x，y，角度，速度
+HAL_Delay(500);
+set_target_move_to_target(&mecanum,0.0f,-800.0f,0.0f,1000.0f);
+HAL_Delay(500);
+set_target_move_to_target(&mecanum,0.0f,-410.0f,0.0f,1000.0f);
+HAL_Delay(500);
+set_target_move_to_target(&mecanum,890.0f,0.0f,0.0f,1000.0f);
+
+
+
+
+   
+
+    
+          
+    //向x轴正方向移动1m
+    /*
      if (pid_flag)
       {
         pid_flag = 0;  //清除标志位
@@ -189,7 +228,7 @@ HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);
             }
         }
       }
-
+*/
 
     /*
     float distance = mecanum.current_pos.distance;
@@ -334,21 +373,39 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-static uint32_t timer_count = 0;
+//static uint32_t timer_count = 0;
 
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim == &htim2)
     {
-       timer_count++; // 计数器，用于调试观察
-       pid_flag = 1; // 设置PID计算标志
-    for (int i = 0; i < 4; i++) 
+      
+      for (int i = 0; i < 4; i++)
+{ 
+  speed_pid[i].target = mecanum.wheel_speed[i];
+  const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
+  speed_pid_control(&speed_pid[i], speed_pid[i].target, motor_data->speed_rpm);
+}
+CAN_cmd_chassis(speed_pid[0].output,speed_pid[1].output,speed_pid[2].output,speed_pid[3].output);
+
+       
+//       pid_flag = 1; // 设置PID计算标志
+//       switch(stop)
+//       {
+//        case 0:
+//          break;
+
+//        case 1:
+//          stop_all();
+
+//           default:
+//                stop = 1; // 默认停止
+//                break;
+       }
+    /*for (int i = 0; i < 4; i++) 
     {
-			mecanum.vx = 1000.0f;                    // 前进速度
-        mecanum.vy = 0.0f;                      // 不侧移
-        mecanum.vw = angle_controller();        // 角度环计算vw保持角度
-         mecanum_calculate_wheel_speed(&mecanum);
+		
         motor_pid[i].target = mecanum.wheel_speed[i];
         const motor_measure_t *motor_data = get_chassis_motor_measure_point(i);
         
@@ -358,9 +415,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
     CAN_cmd_chassis(motor_pid[0].output, motor_pid[1].output, motor_pid[2].output, motor_pid[3].output);
     // 不在中断里发送CAN指令，移到主循环
+    
     }
+*/
   
 }
+
    
 
 

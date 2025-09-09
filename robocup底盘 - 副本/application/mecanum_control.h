@@ -23,14 +23,20 @@
 
 #ifndef MECANUM_CONTROL_H
 #define MECANUM_CONTROL_H
+#include "pid.h"
 
 #include "struct_typedef.h"
+extern volatile uint8_t pid_flag;
+extern PID_TypeDef motor_pid[4];
 
 // 位置结构体
 typedef struct
 {
+    fp32 x;
+    fp32 y;
     fp32 distance; // 距离
     fp32 yaw;   // 角度
+    fp32 current_distance;
 } position_t; //麦轮结构体中名字为 current_pos和 target_pos
 
 
@@ -54,6 +60,7 @@ typedef struct
 
     position_t current_pos; //包含距离，角度
     position_t target_pos;
+    uint8_t reset;
 } mecanum_control_t;
 extern mecanum_control_t mecanum;
 
@@ -62,6 +69,12 @@ extern void mecanum_init(mecanum_control_t *mecanum_control);
 
 // 麦轮底盘速度解算，根据vx, vy, vw计算四个轮子的速度
 extern void mecanum_calculate_wheel_speed(mecanum_control_t *mecanum_control);
+
+
+extern void move_to_target(mecanum_control_t *mecanum_control, fp32 x, fp32 y, fp32 angle, fp32 speed);
+extern void mecanum_move_to_target(mecanum_control_t *mecanum_control, fp32 x, fp32 y, fp32 angle, fp32 speed);
+
+extern void set_target_move_to_target(mecanum_control_t *mecanum_control, fp32 x, fp32 y, fp32 angle, fp32 speed);
 
 // 限制轮速在最大值范围内
 extern void mecanum_limit_wheel_speed(mecanum_control_t *mecanum_control);
@@ -74,4 +87,5 @@ extern void mecanum_move_left(mecanum_control_t *mecanum_control, fp32 speed); /
 extern void mecanum_move_right(mecanum_control_t *mecanum_control, fp32 speed); //右移
 extern void mecanum_rotate_left(mecanum_control_t *mecanum_control, fp32 speed); //左转
 extern void mecanum_rotate_right(mecanum_control_t *mecanum_control, fp32 speed); //右转
+extern void stop_all(void); //紧急停止
 #endif // MECANUM_CONTROL_H

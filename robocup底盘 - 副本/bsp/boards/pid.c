@@ -16,8 +16,11 @@
 #include "stm32f4xx_hal.h"
 #include "pid.h"
 #include "mecanum_control.h"
+#include "math.h"
+
 extern mecanum_control_t mecanum;
 q_pid angle_pid;
+q_pid speed_pid[4];
 
 
 #define ABS(x)		((x>0)? x: -x)   // ??????
@@ -131,6 +134,86 @@ void pid_init(PID_TypeDef* pid)
 	pid->f_cal_pid = pid_calculate;
 }
 
+//新写速度环
+
+void speed_pid_init(q_pid *speed_pid)
+{
+	speed_pid->target = 0.0f;      // ??????0?
+    speed_pid->kp = 0.0f;                // ????
+    speed_pid->ki = 0.0f;                // ????
+    speed_pid->kd = 0.0f;                // ????
+
+    speed_pid->last_err = 0.0f;        // ????
+    speed_pid->integral = 0.0f;          // ????
+    speed_pid->max_output = 0.0f;      // ???????
+    speed_pid->max_integral = 0.0f;    // ????
+    speed_pid->enable = 1;               // ????
+}
+
+void set_speed_pid(q_pid *speed_pid,float kp, float ki, float kd,float max_out,float max_i,float deadband)
+{ 
+	speed_pid->kp = kp;
+	speed_pid->ki = ki;
+	speed_pid->kd = kd;
+	speed_pid->max_output = max_out;
+	speed_pid->max_integral = max_i;
+	speed_pid->deadband = deadband;
+}
+
+void speed_pid_control(q_pid *speed_pid, float target_speed, float current_speed)
+{
+    if(!speed_pid->enable) {
+        speed_pid->output = 0.0f;
+		return; 
+    }
+
+	speed_pid->target = target_speed;
+    speed_pid->current = current_speed;
+
+	 // 计算误差
+    speed_pid->err = speed_pid->target - speed_pid->current;
+
+	if(fabsf(speed_pid->err) < speed_pid->deadband) {
+         // 在死区内，保持上次输出
+		 return;
+    }
+
+	// P项计算
+    speed_pid->p_output = speed_pid->kp * speed_pid->err;
+    
+    // I项计算
+    speed_pid->integral += speed_pid->err;
+    
+    // 积分限幅
+    if(speed_pid->integral > speed_pid->max_integral) {
+        speed_pid->integral = speed_pid->max_integral;
+    } else if(speed_pid->integral < -speed_pid->max_integral) {
+        speed_pid->integral = -speed_pid->max_integral;
+    }
+    // I项计算
+    speed_pid->i_output = speed_pid->ki * speed_pid->integral;
+
+	// D项计算
+    speed_pid->d_output = speed_pid->kd * (speed_pid->err - speed_pid->last_err);
+    
+    // 总输出
+    speed_pid->output = speed_pid->p_output + speed_pid->i_output + speed_pid->d_output;
+    
+    // 输出限幅
+    if(speed_pid->output > speed_pid->max_output) {
+        speed_pid->output = speed_pid->max_output;
+    } else if(speed_pid->output < -speed_pid->max_output) {
+        speed_pid->output = -speed_pid->max_output;
+    }
+    
+    // 保存当前误差为上次误差
+    speed_pid->last_err = speed_pid->err;
+}
+
+
+
+
+
 //设置误差-180~180
 float set_error(float target, float current)
 {
@@ -158,14 +241,14 @@ void set_target_angle(float angle)
 void angle_controller_init(void)
 {
     angle_pid.target = 0.0f;      // ??????0?
-    angle_pid.kp = 3.0f;                // ????
-    angle_pid.ki = 0.1f;                // ????
-    angle_pid.kd = 0.5f;                // ????
+    angle_pid.kp = 0.0f;                // ????
+    angle_pid.ki = 0.0f;                // ????
+    angle_pid.kd = 0.0f;                // ????
 
     angle_pid.last_err = 0.0f;        // ????
     angle_pid.integral = 0.0f;          // ????
-    angle_pid.max_output = 80.0f;      // ???????
-    angle_pid.max_integral = 100.0f;    // ????
+    angle_pid.max_output = 0.0f;      // ???????
+    angle_pid.max_integral = 0.0f;    // ????
     angle_pid.enable = 1;               // ????
 }
 
@@ -221,6 +304,7 @@ float angle_controller(void)
 
     return output;
 }
+
 
 
 

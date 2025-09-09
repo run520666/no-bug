@@ -178,3 +178,135 @@ void angle_controller_init(void)
     angle_ctrl.pid_yaw.err_last = 0.0f;
     angle_ctrl.pid_yaw.integral = 0.0f;
 }
+// 在mecanum_control.c中添加新函数
+
+/**
+  * @brief          根据目标坐标移动并保持角度
+  * @param[out]     mecanum_control: 麦轮底盘控制结构体指针
+  * @param[in]      target_x: 目标X坐标 (mm)
+  * @param[in]      target_y: 目标Y坐标 (mm)
+  * @param[in]      target_angle: 目标角度 (-180到+180度)
+  * @param[in]      speed: 移动速度 (rpm)
+  * @retval         none
+  */
+void mecanum_move_to_coordinate(mecanum_control_t *mecanum_control, 
+                               fp32 target_x, fp32 target_y, 
+                               fp32 target_angle, fp32 speed)
+{
+    if (mecanum_control == NULL)
+    {
+        return;
+    }
+    
+    // 🎯 计算当前位置到目标位置的距离和方向
+    fp32 current_x = mecanum_control->current_pos.distance * cosf(mecanum_control->current_pos.yaw * 3.14159f / 180.0f);
+    fp32 current_y = mecanum_control->current_pos.distance * sinf(mecanum_control->current_pos.yaw * 3.14159f / 180.0f);
+    
+    fp32 dx = target_x - current_x;  // X方向距离差
+    fp32 dy = target_y - current_y;  // Y方向距离差
+    fp32 distance = sqrtf(dx*dx + dy*dy);  // 到目标点的直线距离
+    
+    // 🎯 如果距离大于阈值才移动
+    if(distance > 50.0f) {  // 距离大于5cm才移动
+        // 计算归一化的移动方向
+        fp32 direction_x = dx / distance;
+        fp32 direction_y = dy / distance;
+        
+        // 设置线速度（朝向目标点）
+        mecanum_control->vx = direction_x * speed;
+        mecanum_control->vy = direction_y * speed;
+    } else {
+        // 到达目标位置，停止移动
+        mecanum_control->vx = 0.0f;
+        mecanum_control->vy = 0.0f;
+    }
+    
+    // 🎯 设置目标角度并计算角度环输出
+    set_target_angle(target_angle);
+    mecanum_control->vw = angle_control_calculate(mecanum_control->current_pos.yaw);
+    
+    // 执行麦轮解算
+    mecanum_calculate_wheel_speed(mecanum_control);
+}
+
+/**
+  * @brief          检查是否到达目标位置
+  * @param[in]      mecanum_control: 麦轮底盘控制结构体指针
+  * @param[in]      target_x: 目标X坐标 (mm)
+  * @param[in]      target_y: 目标Y坐标 (mm)
+  * @param[in]      tolerance: 位置容差 (mm)
+  * @retval         1: 已到达, 0: 未到达
+  */
+uint8_t mecanum_is_position_reached(mecanum_control_t *mecanum_control, 
+                                   fp32 target_x, fp32 target_y, fp32 tolerance)
+{
+    if (mecanum_control == NULL)
+    {
+        return 0;
+    }
+    
+    // 计算当前位置
+    fp32 current_x = mecanum_control->current_pos.distance * cosf(mecanum_control->current_pos.yaw * 3.14159f / 180.0f);
+    fp32 current_y = mecanum_control->current_pos.distance * sinf(mecanum_control->current_pos.yaw * 3.14159f / 180.0f);
+    
+    // 计算距离
+    fp32 dx = target_x - current_x;
+    fp32 dy = target_y - current_y;
+    fp32 distance = sqrtf(dx*dx + dy*dy);
+    
+    return (distance < tolerance);
+}
+
+/**
+  * @brief          前进并保持角度
+  * @param[out]     mecanum_control: 麦轮底盘控制结构体指针
+  * @param[in]      speed: 速度值(rpm)
+  * @param[in]      target_angle: 目标角度 (-180到+180度)
+  * @retval         none
+  */
+void mecanum_move_forward_with_angle_hold(mecanum_control_t *mecanum_control, 
+                                         fp32 speed, fp32 target_angle)
+{
+    if (mecanum_control == NULL)
+    {
+        return;
+    }
+    
+    // 设置线速度
+    mecanum_control->vx = speed;
+    mecanum_control->vy = 0.0f;
+    
+    // 🎯 角度环计算vw
+    set_target_angle(target_angle);
+    mecanum_control->vw = angle_control_calculate(mecanum_control->current_pos.yaw);
+    
+    // 执行麦轮解算
+    mecanum_calculate_wheel_speed(mecanum_control);
+}
+
+/**
+  * @brief          侧移并保持角度
+  * @param[out]     mecanum_control: 麦轮底盘控制结构体指针
+  * @param[in]      speed: 速度值(rpm)
+  * @param[in]      target_angle: 目标角度 (-180到+180度)
+  * @retval         none
+  */
+void mecanum_move_sideways_with_angle_hold(mecanum_control_t *mecanum_control, 
+                                          fp32 speed, fp32 target_angle)
+{
+    if (mecanum_control == NULL)
+    {
+        return;
+    }
+    
+    // 设置线速度
+    mecanum_control->vx = 0.0f;
+    mecanum_control->vy = speed;
+    
+    // 🎯 角度环计算vw
+    set_target_angle(target_angle);
+    mecanum_control->vw = angle_control_calculate(mecanum_control->current_pos.yaw);
+    
+    // 执行麦轮解算
+    mecanum_calculate_wheel_speed(mecanum_control);
+}
