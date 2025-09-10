@@ -1,0 +1,33 @@
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\kile5\ARM\ARMCC\Bin'
+Build target 'can'
+compiling main.c...
+../Src/main.c(264): error:  #169: expected a declaration
+  }
+../Src/main.c(296): warning:  #12-D: parsing restarts here after previous syntax error
+                                |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+../Src/main.c(297): error:  #77-D: this declaration has no storage class or type specifier
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+../Src/main.c(297): error:  #65: expected a ";"
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+../Src/main.c(298): error:  #77-D: this declaration has no storage class or type specifier
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+../Src/main.c(298): error:  #65: expected a ";"
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+../Src/main.c(299): error:  #77-D: this declaration has no storage class or type specifier
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+../Src/main.c(299): error:  #65: expected a ";"
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+../Src/main.c(300): error:  #77-D: this declaration has no storage class or type specifier
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+../Src/main.c(300): error:  #65: expected a ";"
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+../Src/main.c(302): error:  #169: expected a declaration
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+../Src/main.c(310): warning:  #12-D: parsing restarts here after previous syntax error
+  static uint32_t timer_count = 0;
+../Src/main.c(317): error:  #20: identifier "timer_count" is undefined
+         timer_count++; // 计数器，用于调试观察
+../Src/main.c: 2 warnings, 11 errors
+"can\can.axf" - 11 Error(s), 2 Warning(s).
+Target not created.
+Build Time Elapsed:  00:00:06

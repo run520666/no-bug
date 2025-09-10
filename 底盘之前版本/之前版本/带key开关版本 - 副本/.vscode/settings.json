@@ -1,0 +1,12 @@
+{
+    "cmake.configurePreset": "Debug",
+    "cmake.buildPreset": "Debug",
+    "cmake.cmakePath": "C:\\Program Files\\CMake\\bin\\cmake.exe",
+    "cortex-debug.armToolchainPath": "arm-none-eabi",
+    "cortex-debug.openocdPath": "openocd",
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+}

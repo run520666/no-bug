@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: Build",
+            "type": "cmake",
+            "command": "build",
+            "preset": "Debug",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: Clean",
+            "type": "cmake", 
+            "command": "clean",
+            "preset": "Debug",
+            "group": "build"
+        },
+        {
+            "label": "STM32: Flash",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f", "interface/stlink.cfg",
+                "-f", "target/stm32f4x.cfg",
+                "-c", "program ${workspaceFolder}/build/Debug/can.elf verify reset exit"
+            ],
+            "group": "build",
+            "dependsOn": "CMake: Build"
+        }
+    ]
+}
