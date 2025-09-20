@@ -1,14 +1,29 @@
+/*
+  项目名称: 多功能小球分类与释放系统
+  作者: ChatGPT
+  日期: 2024-06-20
+  版本: 1.0
+  描述: 该项目使用Arduino控制多个SG90舵机和一个MG90s舵机，实现对10个小球孔的颜色识别和分类释放功能。系统通过TCA9548A多路复用器连接颜色传感器和PCA9685舵机驱动器，并通过GM65二维码模块接收指令。
+*/
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include <SoftwareSerial.h>
+#include <SoftwareSerial.h>Serial.print("[releaseBallsByColor] ball_color["); Serial.print(i); Serial.print("]="); Serial.println(ball_color[i]);Serial.print("[releaseBallsByColor] ball_color["); Serial.print(i); Serial.print("]="); Serial.println(ball_color[i]);Serial.print("[releaseBallsByColor] ball_color["); Serial.print(i); Serial.print("]="); Serial.println(ball_color[i]);
 
-// 硬件引脚定义
+//硬件引脚定义
 const int GM65_RX_PIN = 10;
 const int GM65_TX_PIN = 11;
 const int TCA9548A_ADDR = 0x70;
 const int COLOR_SENSOR_ADDR = 0x48;
 const int PCA9685_ADDR = 0x40;
 const int PCA_RESET_PIN = 5;
+
+// MG90s参数定义
+constexpr int MG90S_STEP_ANGLE = 36;
+constexpr int MG90S_DELAY_MS = 500;
+constexpr int MG90S_MOVE_DELAY_MS = 500;
+constexpr int MG90S_CHANNEL = 0;
+constexpr int MG90S_MIN_ANGLE = 0;
+constexpr int MG90S_MAX_ANGLE = 360;
 
 // 软件串口
 SoftwareSerial gm65Serial(GM65_RX_PIN, GM65_TX_PIN);
@@ -207,6 +222,32 @@ void moveSG90Servo(int channel, int angle) {
     pca.setPWM(channel, 0, targetPulse);
     delay(600);
   }
+
+  // MG90s电机360度分段匀速转动（仅在特定调用时演示）
+  // 可根据需要将此段代码放到合适的流程或条件下
+  if (channel == MG90S_CHANNEL && angle == MG90S_MIN_ANGLE) {
+    for (int a = MG90S_MIN_ANGLE; a <= MG90S_MAX_ANGLE; a += MG90S_STEP_ANGLE) {
+      int targetPulse = map(a, 0, 180, SG90_PULSE_MIN, SG90_PULSE_MAX);
+      targetPulse = constrain(targetPulse, SG90_PULSE_MIN, SG90_PULSE_MAX);
+      pca.setPWM(channel, 0, targetPulse);
+      delay(MG90S_DELAY_MS);
+      // 匀速移动到下一步
+      if (a + MG90S_STEP_ANGLE <= MG90S_MAX_ANGLE) {
+        int nextAngle = a + MG90S_STEP_ANGLE;
+        int steps = 10;
+        int subStep = (nextAngle - a) / steps;
+        for (int i = 1; i < steps; i++) {
+          int subAngle = a + i * subStep;
+          int subPulse = map(subAngle, 0, 180, SG90_PULSE_MIN, SG90_PULSE_MAX);
+          subPulse = constrain(subPulse, SG90_PULSE_MIN, SG90_PULSE_MAX);
+          pca.setPWM(channel, 0, subPulse);
+          delay(MG90S_MOVE_DELAY_MS / steps);
+        }
+      }
+    }
+    // 回到初始位置
+    pca.setPWM(channel, 0, SG90_PULSE_INIT);
+  }
 }
 
 // 小球释放函数
@@ -350,6 +391,9 @@ void setup() {
 
   system_state |= (1 << 0);  // 设置system_ready位
   Serial.println("====================系统就绪====================");
+
+  // MG90s电机360度分段匀速转动演示（假设在0号通道）
+  rotateMG90s360(0, 0, 360, 36, 500, 500);
 }
 
 // 主循环
