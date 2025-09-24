@@ -428,7 +428,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   if (huart == &huart1)
   {
     test++;
-    hwt101_ReceiveData(g_usart1_receivedata); //调用处理函数
+    hwt101_ReceiveData(g_usart1_receivedata); //调用处理函数，存入了麦轮结构体
     HAL_UART_Receive_IT(&huart1, &g_usart1_receivedata, 1);//继续进行中断接收
 
   }

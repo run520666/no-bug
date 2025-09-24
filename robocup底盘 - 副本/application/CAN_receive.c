@@ -27,6 +27,7 @@ extern mecanum_control_t mecanum;
 
 
 
+
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 //motor data read
@@ -138,12 +139,23 @@ void mecanum_ecd_distance(mecanum_control_t *mecanum_control)
         mecanum_control->total_wheel_distance[i] += wheel_distance;
 
     }
+    if(mecanum_control->reset){
+       mecanum_control->current_pos.distance = 0.0f;
+        mecanum_control->current_pos.x = 0.0f;
+        mecanum_control->current_pos.y = 0.0f;
+        mecanum_control->reset = 0;
+        return;
+    }
     
     // 计算底盘平均移动距离
     float chassis_distance = abs_wheel_distance_sum / 4.0f;
     
-    // 累加到总距离
-    mecanum_control->current_pos.distance += chassis_distance; //更新到麦轮结构体
+    
+    mecanum_control->current_pos.distance += chassis_distance; //距离这步解算在mecanum to target中处理
+    
+    float angle_rad = mecanum_control->current_pos.yaw * 3.1415f / 180.0f;  // 转换为弧度
+    mecanum_control->current_pos.x += chassis_distance * cosf(angle_rad);  // X方向分量
+    mecanum_control->current_pos.y += chassis_distance * sinf(angle_rad);  // Y方向分量
     
     // 如果有朝向角，分解到x/y轴
     /*
