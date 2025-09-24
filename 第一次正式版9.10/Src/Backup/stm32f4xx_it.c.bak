@@ -426,6 +426,8 @@ void CAN2_RX0_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+
+// 串口接收中断回调函数
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   if (huart == &huart1)

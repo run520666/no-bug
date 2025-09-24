@@ -33,6 +33,7 @@ can\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 can\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 can\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 can\main.o: ../Inc/can.h
+can\main.o: ../Inc/dma.h
 can\main.o: ../Inc/tim.h
 can\main.o: ../Inc/stm32f4xx_it.h
 can\main.o: ../Inc/usart.h

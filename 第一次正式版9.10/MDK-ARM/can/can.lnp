@@ -3,6 +3,7 @@
 "can\main.o"
 "can\gpio.o"
 "can\can.o"
+"can\dma.o"
 "can\tim.o"
 "can\usart.o"
 "can\stm32f4xx_it.o"
