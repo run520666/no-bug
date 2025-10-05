@@ -47,7 +47,7 @@
 
 /* USER CODE BEGIN PV */
 // 接收缓冲区
-uint8_t rxBuffer[5];  // 帧头+长度+data1+校验+帧尾 = 5字节
+uint8_t rxBuffer[5];  // 帧头+长度+data+校验+帧尾 = 5字节
 uint8_t rxIndex = 0;
 uint8_t rxByte;
 volatile uint8_t frameReceived = 0;
