@@ -211,16 +211,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
         if (rxIndex == 0 && rxByte == FRAME_HEAD) {
             // 检测到帧头
             rxBuffer[rxIndex++] = rxByte;
-        } else if (rxIndex > 0 && rxIndex < 4) {
+        } else if (rxIndex > 0 && rxIndex < 5) {
             rxBuffer[rxIndex++] = rxByte;
             
-            // 接收完整帧（4字节）
-            if (rxIndex == 4 && rxByte == FRAME_TAIL) {
+            // 接收完整帧（5字节）
+            if (rxIndex == 5 && rxByte == FRAME_TAIL) {
                 frameReceived = 1;
             }
             
             // 接收错误，重置
-            if (rxIndex == 4 && rxByte != FRAME_TAIL) {
+            if (rxIndex == 5 && rxByte != FRAME_TAIL) {
                 rxIndex = 0;
             }
         } else {
