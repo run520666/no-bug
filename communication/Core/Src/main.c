@@ -51,6 +51,7 @@ uint8_t rxBuffer[5];  // 帧头+长度+data+校验+帧尾 = 5字节
 uint8_t rxIndex = 0;
 uint8_t rxByte;
 volatile uint8_t frameReceived = 0;
+uint8_t recivedata;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -84,17 +85,8 @@ void processReceivedData(void) {
             
             // 校验数据
             if (checksum == calc_checksum && length == DATA_LENGTH) {
-                // 收到Arduino的数据（data1=1）
-			
-				
-				
-				
-				
-				
-				
-				
-				
-				
+                // 收到Arduino的数据data
+				recivedata = data ;	
             }
         }
         
