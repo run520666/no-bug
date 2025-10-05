@@ -39,6 +39,7 @@ uint8_t gd_l=0;
 uint8_t gd_r=0;
 extern float vofa_data[3];
 extern UART_HandleTypeDef huart6; 
+extern UART_HandleTypeDef huart3;
 
 /**
   * @brief          麦轮底盘初始化
@@ -452,15 +453,6 @@ void set_target_move_to_target(mecanum_control_t *mecanum_control, fp32 x, fp32 
     fp32 angle_error = mecanum_control->target_pos.yaw - mecanum_control->current_pos.yaw;
     while(angle_error > 180.0f) angle_error -= 360.0f;
     while(angle_error < -180.0f) angle_error += 360.0f;
-
-    vofa_data[0] = (float)mecanum.current_pos.yaw;          // 当前yaw角度
-    vofa_data[1] = (float)angle_pid_s.target;               // 直线角度PID目标角度
-    vofa_data[2] = (float)angle_pid_t.target;               // 转向角度PID目标角度
-    HAL_UART_Transmit(&huart6, (uint8_t*)vofa_data, sizeof(vofa_data), 100);
-    // 发送帧尾
-    unsigned char tail[4] = {0x00, 0x00, 0x80, 0x7f};
-    HAL_UART_Transmit(&huart6, tail, 4, 100);
-
    
 
         //检查是否到达目标
@@ -614,7 +606,7 @@ void move_x(mecanum_control_t *mecanum_control, fp32 angle, fp32 speed)
                 (HAL_GPIO_ReadPin(gd_l_far_GPIO_Port, gd_l_far_Pin)==GPIO_PIN_RESET)  )
             {
                 conter++;
-                if(conter>=3)
+                if(conter>=2)
                 {
                    conter = 0;
                    set=0;
@@ -631,7 +623,7 @@ void move_x(mecanum_control_t *mecanum_control, fp32 angle, fp32 speed)
                  (HAL_GPIO_ReadPin(gd_r_far_GPIO_Port, gd_r_far_Pin)==GPIO_PIN_RESET) )
             {
                conter++;
-               if(conter>=3)
+               if(conter>=2)
                {
                 conter = 0;
                 set=0;
@@ -695,7 +687,7 @@ void move_y(mecanum_control_t *mecanum_control, fp32 angle, fp32 speed)
                     if(jg_conter >= 2) //消抖
                     {
                         mecanum_stop(mecanum_control);
-                        gd_l = 0; //重置标志
+                        
                         set = 0;
                         jg_conter = 0;
                         return; //退出函数
@@ -745,7 +737,7 @@ void move_y(mecanum_control_t *mecanum_control, fp32 angle, fp32 speed)
                     if(jg_conter >= 2)
                     {
                         mecanum_stop(mecanum_control);
-                        gd_r = 0; //重置标志
+                    
                         set = 0;
                         jg_conter = 0;
                         return; //退出函数

@@ -31,6 +31,7 @@
 "erlangshen\pid.o"
 "erlangshen\stp_23l.o"
 "erlangshen\ttl.o"
+"erlangshen\communication.o"
 "erlangshen\bsp_can.o"
 --strict --scatter "erlangshen\erlangshen.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols

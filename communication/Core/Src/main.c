@@ -60,7 +60,7 @@ void UART_SendData(uint8_t data) {
     frame[2] = FRAME_HEAD + data;       // 校验和数据
     frame[3] = FRAME_TAIL;
     
-    HAL_UART_Transmit(&huart6, frame, 4, 100);
+    HAL_UART_Transmit(&huart6, frame, 7, 100);
 }
 // 处理接收到的数据帧
 void processReceivedData(void) {
@@ -187,7 +187,7 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 // UART接收中断回调
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+void HAL_UART_RxCpltCallback() {
     if (huart->Instance == USART6) {
         // 状态机接收
         if (rxIndex == 0 && rxByte == FRAME_HEAD) {

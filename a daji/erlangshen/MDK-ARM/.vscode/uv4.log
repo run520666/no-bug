@@ -1,2 +1,3 @@
 Load "erlangshen\\erlangshen.axf" 
-Erase Done.Programming Done.Verify OK.Flash Load finished at 22:54:58
+Error: Flash Download failed  -  Target DLL has been cancelled
+Flash Load finished at 21:14:08

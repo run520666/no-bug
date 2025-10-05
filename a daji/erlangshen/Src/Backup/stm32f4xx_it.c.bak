@@ -27,6 +27,7 @@
 #include "stp_23l.h"
 #include "pid.h"
 #include "CAN_receive.h"
+#include "communication.h"
 
 /* USER CODE END Includes */
 
@@ -64,6 +65,7 @@
 extern CAN_HandleTypeDef hcan1;
 extern TIM_HandleTypeDef htim2;
 extern UART_HandleTypeDef huart7;
+extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart6;
 /* USER CODE BEGIN EV */
 // HWT101相关全局变量
@@ -71,6 +73,9 @@ uint8_t g_usart7_receivedata = 0; // 接收数据
 
 //激光传感器变量
 uint8_t uart6_rx_buf[1] = {0};
+
+//通信变量
+extern uint8_t rxByte;
 
 extern mecanum_control_t mecanum;
 extern q_pid speed_pid[4];
@@ -244,6 +249,20 @@ void TIM2_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles USART3 global interrupt.
+  */
+void USART3_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART3_IRQn 0 */
+
+  /* USER CODE END USART3_IRQn 0 */
+  HAL_UART_IRQHandler(&huart3);
+  /* USER CODE BEGIN USART3_IRQn 1 */
+
+  /* USER CODE END USART3_IRQn 1 */
+}
+
+/**
   * @brief This function handles USART6 global interrupt.
   */
 void USART6_IRQHandler(void)
@@ -305,6 +324,32 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     STP23L_RxCallback(uart6_rx_buf[0]);  /* 调用 STP-23L 解析函数 */
     HAL_UART_Receive_IT(&huart6, uart6_rx_buf, 1);  /* 重新开启接收中断 */
   }
+  if(huart == &huart3){
+   // 状态机接收
+        if (rxIndex == 0 && rxByte == FRAME_HEAD) {
+            // 检测到帧头
+            rxBuffer[rxIndex++] = rxByte;
+        } else if (rxIndex > 0 && rxIndex < 5) {
+            rxBuffer[rxIndex++] = rxByte;
+            
+            // 接收完整帧（5字节）
+            if (rxIndex == 5 && rxByte == FRAME_TAIL) {
+                frameReceived = 1;
+            }
+            
+            // 接收错误，重置
+            if (rxIndex == 5 && rxByte != FRAME_TAIL) {
+                rxIndex = 0;
+            }
+        } else {
+            // 异常，重置
+            rxIndex = 0;
+        }
+        
+        // 继续接收下一个字节
+        HAL_UART_Receive_IT(&huart3, &rxByte, 1);
+  }
+
 }
 
 /* USER CODE END 1 */

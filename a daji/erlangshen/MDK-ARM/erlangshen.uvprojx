@@ -710,6 +710,11 @@
               <FileType>1</FileType>
               <FilePath>..\applications\ttl.c</FilePath>
             </File>
+            <File>
+              <FileName>communication.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\applications\communication.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

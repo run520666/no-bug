@@ -3,18 +3,18 @@
         {
             "name": "erlangshen",
             "includePath": [
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\Inc",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\Drivers\\CMSIS\\Include",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\applications",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\bsp",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\Inc",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\Drivers\\CMSIS\\Include",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\applications",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\bsp",
                 "D:\\kile5\\ARM\\ARMCC\\include",
                 "D:\\kile5\\ARM\\ARMCC\\include\\rw",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\MDK-ARM",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\Src",
-                "d:\\GIT\\NO-BUG-QJ\\a daji\\erlangshen\\Drivers\\STM32F4xx_HAL_Driver\\Src"
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\MDK-ARM",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\Src",
+                "d:\\GIT\\no-bug\\a daji\\erlangshen\\Drivers\\STM32F4xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

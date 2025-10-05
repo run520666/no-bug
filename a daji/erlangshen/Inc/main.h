@@ -65,6 +65,10 @@ void Error_Handler(void);
 #define gd_r_far_GPIO_Port GPIOD
 #define gd_l_far_Pin GPIO_PIN_12
 #define gd_l_far_GPIO_Port GPIOD
+#define led_r_Pin GPIO_PIN_11
+#define led_r_GPIO_Port GPIOE
+#define led_g_Pin GPIO_PIN_14
+#define led_g_GPIO_Port GPIOF
 
 /* USER CODE BEGIN Private defines */
 

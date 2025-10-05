@@ -47,3 +47,5 @@ erlangshen\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\string.h
 erlangshen\main.o: D:\kile5\ARM\ARMCC\Bin\..\include\stdio.h
 erlangshen\main.o: ../applications/hwt101.h
 erlangshen\main.o: ../applications/stp_23l.h
+erlangshen\main.o: ../applications/communication.h
+erlangshen\main.o: ../applications/ttl.h
