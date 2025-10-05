@@ -57,7 +57,7 @@ volatile uint8_t frameReceived = 0;
 void SystemClock_Config(void);
 // 发送三个数据到Arduino
 //初始值都发0，改变状态时发1
-void UART_SendData(uint8_t dataone, uint8_t datatwo, uint8_t datathree) {
+void UART_SendData(UART_HandleTypeDef *huart,uint8_t dataone, uint8_t datatwo, uint8_t datathree) {
     uint8_t frame[7];
     frame[0] = FRAME_HEAD;
     frame[1] = DATA_LENGTH;              // 数据长度=3
@@ -67,7 +67,7 @@ void UART_SendData(uint8_t dataone, uint8_t datatwo, uint8_t datathree) {
     frame[5] = FRAME_HEAD + DATA_LENGTH + dataone + datatwo + datathree;  // 校验
     frame[6] = FRAME_TAIL;
     
-    HAL_UART_Transmit(&huart6, frame, 6, 100);
+    HAL_UART_Transmit(huart, frame, 7, 100);
 }
 
 // 处理接收到的数据帧
@@ -76,11 +76,11 @@ void processReceivedData(void) {
         // 校验帧头和帧尾
         if (rxBuffer[0] == FRAME_HEAD && rxBuffer[4] == FRAME_TAIL) {
             uint8_t length = rxBuffer[1];
-            uint8_t datathree = rxBuffer[2];
+            uint8_t data = rxBuffer[2];
             uint8_t checksum = rxBuffer[3];
             
               // 计算校验和
-            uint8_t calc_checksum = FRAME_HEAD + length + datathree ;
+            uint8_t calc_checksum = FRAME_HEAD + length + data ;
             
             // 校验数据
             if (checksum == calc_checksum && length == DATA_LENGTH) {
@@ -152,7 +152,7 @@ int main(void)
   while (1)
   {
 	  
-	 UART_SendData(0,0,0);
+	 UART_SendData(&huart6,0,0,0);
 	   // 处理接收到的数据
         processReceivedData(); 
 	HAL_Delay(100);
