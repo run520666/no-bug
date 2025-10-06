@@ -143,6 +143,7 @@ int main(void)
   MX_TIM2_Init();
   MX_UART7_Init();
   MX_USART3_UART_Init();
+  MX_UART8_Init();
   /* USER CODE BEGIN 2 */
  
 
@@ -205,33 +206,25 @@ int main(void)
 //  HAL_Delay(10);
 //  set_target_move_to_target(&mecanum,624.5f,0.0f,t1,3000.0f,1,1); //避障起点
 //  HAL_Delay(10);
-//  move_x(&mecanum,t1,1000.0f);
-//  HAL_Delay(250);
-//  move_y(&mecanum,t1,1000.0f);
-//  HAL_Delay(250);
-  //set_target_move_to_target(&mecanum,230.0f-2.0f,0.0f,t1,1000.0f,0,1); //第一个货站
-
-//  gd_l=0;
-//  gd_r=0;
-    for(int i=0; i<10; i++){
-    uint8_t data[3] = {0x01, 0x02, 0x03};
-    HAL_StatusTypeDef status = HAL_UART_Transmit(&huart3, data, 3, 100);
-    
-    if(status == HAL_OK){
-      // 发送成功，LED 闪烁（假设有 LED 连接到某个 GPIO）
-      // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-      HAL_GPIO_TogglePin(led_g_GPIO_Port, led_g_Pin);
-    }
-    else{
-      // 错误处理
-      // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-      HAL_GPIO_TogglePin(led_r_GPIO_Port, led_r_Pin);
-
-    }
-    HAL_Delay(200);
+  move_x(&mecanum,t1,1000.0f);
+  HAL_Delay(250);
+  move_y(&mecanum,t1,1000.0f);
+  HAL_Delay(250);
+  set_target_move_to_target(&mecanum,200,0.0f,t1,1000.0f,0,1); //第一个货站
+while (1)
+{
+  UART_SendData(&huart3, gd_l,gd_r,1);
+  processReceivedData();
+  HAL_Delay(5);
+  if(recivedata)
+  {
+    // 处理接收到的数据
+    gd_l=0;
+    gd_r=0;
+    break;
   }
-  while(1){}
-  
+}
+
 
 
 //  set_target_move_to_target(&mecanum,461.0f,0.0f,t1,3000.0f,1,1);  //避障起点

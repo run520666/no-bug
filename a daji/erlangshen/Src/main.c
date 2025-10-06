@@ -143,6 +143,7 @@ int main(void)
   MX_TIM2_Init();
   MX_UART7_Init();
   MX_USART3_UART_Init();
+  MX_UART8_Init();
   /* USER CODE BEGIN 2 */
  
 
