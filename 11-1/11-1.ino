@@ -81,7 +81,7 @@ Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);  // PCA9685默认�
 SoftwareSerial gm65_1(GM65_1_RX, GM65_1_TX);  // 创建第一个GM65的软件串口对象
 SoftwareSerial gm65_2(GM65_2_RX, GM65_2_TX);  // 创建第二个GM65的软件串口对象
 #define GM65_BAUD 9600             // GM65默认波特率
-#define GM65_TIMEOUT 100           // 二维码模块读取超时时间(毫秒)
+#define GM65_TIMEOUT 500           // 二维码模块读取超时时间(毫秒)
 
 // 颜色识别传感器配置
 #define COLOR_SENSOR_ADDR 0x48     // 颜色传感器I2C地址
@@ -953,60 +953,107 @@ void loop() {
           // 左侧舵机动作 - 仅在空闲状态下执行
           if (dataone == 1 && leftState == STATE_IDLE) {
             Serial.println("放下左边舵机...");
-            zx20s_8Left();
-            zx20s_7Left();
+            zx20s_8Left();  // 放下左舵机
+            zx20s_7Left();  // 翻转舵机向左
             leftState = STATE_DEPLOYED;  // 更新状态为已放下
-            
+            // 关键修复1：等待舵机稳定+GM65唤醒（1.5秒足够机械动作完成）
+            delay(1500);
             if (isMappingDone) {
-              // 切换到第一个GM65并读取数据
-              gm65_1.listen();
-              String data1 = readGM65Data(gm65_1);
-              if (data1.length() > 0) {
-                processGM65Data(data1, 1);
-                // 左侧舵机复位逻辑 - 已放下且释放时间已过2秒
-                 if (leftState == STATE_DEPLOYED && millis() - leftReleaseTime >= RELEASE_DELAY) {
-                  Serial.println("左侧小球释放后已延迟2秒，复位左侧舵机...");
-                  zx20s_8FuWei();
-                  zx20s_7FuWei();
-                  leftState = STATE_RESET;
-                  sendData(1);  // 发送复位完成信号给STM32
-                  // 流程结束，恢复等待状态
-                  currentState = STATE_WAITING;
-                  Serial.println("左侧流程结束，等待新指令...");
-                  // 重置状态，为下一次循环做准备
-                  leftReleaseTime = 0;
-               }
-              }
-              delay(SENSOR_READ_DELAY);
-            }
-          }
-          
+              // 关键修复2：切换软件串口监听（先停止gm65_2，再启动gm65_1）
+              gm65_2.end();  // 停止gm65_2的监听，避免冲突
+              gm65_1.begin(GM65_BAUD);  // 重新初始化gm65_1（确保监听状态）
+              gm65_1.listen();  // 激活gm65_1的监听
+              // 关键修复3：增加3次重试读取，提高识别成功率
+              String data1 = "";
+              int retryCount = 3;  // 重试3次
+              while (retryCount-- > 0 && data1.length() == 0) {
+                data1 = readGM65Data(gm65_1);
+                if (data1.length() == 0) {
+                  Serial.print("GM65_1第");
+                  Serial.print(4 - retryCount);
+                  Serial.println("次读取失败，重试...");
+                  delay(500);  // 重试间隔500ms
+                  }
+                  }
+                  // 处理读取到的二维码数据
+                  if (data1.length() > 0) {
+                    Serial.print("GM65_1成功读取到数据：");
+                    Serial.println(data1);
+                    processGM65Data(data1, 1);  // 解析二维码数据
+                    // 关键修复4：等待小球释放完成（原RELEASE_DELAY=5000ms，无需修改）
+                    while (millis() - leftReleaseTime < RELEASE_DELAY) {
+                      delay(100);  // 等待5秒释放时间
+                      }
+                      // 复位左侧舵机
+                      Serial.println("左侧小球释放后已延迟5秒，复位左侧舵机...");
+                      zx20s_8FuWei();
+                      zx20s_7FuWei();
+                      leftState = STATE_RESET;
+                      sendData(1);  // 发送复位完成信号给STM32
+                      currentState = STATE_WAITING;  // 恢复等待状态
+                      Serial.println("左侧流程结束，等待新指令...");
+                      leftReleaseTime = 0;  // 重置释放时间
+                      } else {
+                        Serial.println("GM65_1多次读取失败，请检查模块或二维码！");
+                        // 读取失败时也复位舵机，避免卡死
+                        zx20s_8FuWei();
+                        zx20s_7FuWei();
+                        leftState = STATE_IDLE;  // 恢复空闲状态
+                        currentState = STATE_WAITING;
+                        }
+                        }
+                        delay(SENSOR_READ_DELAY);
+                        }
           // 右侧舵机动作 - 仅在空闲状态下执行
           if (datatwo == 1 && rightState == STATE_IDLE) {
             Serial.println("放下右边舵机...");
             zx20s_9Right();
             zx20s_7Right();
             rightState = STATE_DEPLOYED;  // 更新状态为已放下
+            delay(1500);
             
             if (isMappingDone) {
               // 切换到第二个GM65并读取数据
-              gm65_2.listen();
-              String data2 = readGM65Data(gm65_2);
-              if (data2.length() > 0) {
-                processGM65Data(data2, 2);
-                // 右侧舵机复位逻辑 - 已放下且释放时间已过2秒
-                if (rightState == STATE_DEPLOYED && millis() - rightReleaseTime >= RELEASE_DELAY) {
-                  Serial.println("右侧小球释放后已延迟2秒，复位右侧舵机...");
-                  zx20s_9FuWei();
-                  zx20s_7FuWei();
-                  rightState = STATE_RESET;
-                  sendData(1);  // 发送复位完成信号给STM32
-                  // 流程结束，恢复等待状态
-                  currentState = STATE_WAITING;
-                  Serial.println("右侧流程结束，等待新指令...");
-                  // 重置状态，为下一次循环做准备
-                  rightReleaseTime = 0;
-                }
+              gm65_1.end();  // 停止gm65_1的监听，避免冲突
+              gm65_2.begin(GM65_BAUD);  // 重新初始化gm65_2（确保监听状态）
+              gm65_2.listen();  // 激活gm65_2的监听
+              // 关键修复3：增加3次重试读取，提高识别成功率
+              String data2 = "";
+              int retryCount = 3;  // 重试3次
+              while (retryCount-- > 0 && data2.length() == 0) {
+                data2 = readGM65Data(gm65_2);
+                if (data2.length() == 0) {
+                  Serial.print("GM65_2第");
+                  Serial.print(4 - retryCount);
+                  Serial.println("次读取失败，重试...");
+                  delay(500);  // 重试间隔500ms
+                  }
+                  }
+                  // 处理读取到的二维码数据
+                  if (data2.length() > 0) {
+                    Serial.print("GM65_1成功读取到数据：");
+                    Serial.println(data2);
+                    processGM65Data(data2, 2);  // 解析二维码数据
+                    // 关键修复4：等待小球释放完成（原RELEASE_DELAY=5000ms，无需修改）
+                    while (millis() - rightReleaseTime < RELEASE_DELAY) {
+                      delay(100);  // 等待5秒释放时间
+                      }
+                      // 复位左侧舵机
+                      Serial.println("左侧小球释放后已延迟5秒，复位左侧舵机...");
+                      zx20s_9FuWei();
+                      zx20s_7FuWei();
+                      rightState = STATE_RESET;
+                      sendData(1);  // 发送复位完成信号给STM32
+                      currentState = STATE_WAITING;  // 恢复等待状态
+                      Serial.println("左侧流程结束，等待新指令...");
+                      rightReleaseTime = 0;  // 重置释放时间
+                      } else {
+                        Serial.println("GM65_1多次读取失败，请检查模块或二维码！");
+                        // 读取失败时也复位舵机，避免卡死
+                        zx20s_9FuWei();
+                        zx20s_7FuWei();
+                        rightState = STATE_IDLE;  // 恢复空闲状态
+                        currentState = STATE_WAITING;
               }
             }
           }
