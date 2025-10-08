@@ -15,7 +15,7 @@
 // 主状态机枚举
 enum SystemState {
   STATE_IDLE,           // 空闲状态(默认状态,舵机复位)
-  // STATE_COLOR_MAPPING,  // 颜色映射状态 (已移至setup)
+  STATE_COLOR_MAPPING,  // 颜色映射状态 (已移至setup)
   STATE_LEFT_QR,        // 左侧二维码识别
   STATE_RIGHT_QR,       // 右侧二维码识别
   STATE_WAIT_DELAY      // 等待延迟后复位
@@ -25,7 +25,7 @@ SystemState systemState = STATE_IDLE;
 
 // 延迟相关变量
 unsigned long operationStartTime = 0;
-const unsigned long RELEASE_DELAY = 5000;
+const unsigned long RELEASE_DELAY = 7000;
 
 // -------------------------- 初始化函数 --------------------------
 void setup() {
@@ -71,12 +71,14 @@ void setup() {
   // 初始化动态映射数组
   initDynamicMapping();
 
+  /*
   // 执行自动颜色映射
   Serial.println(F("开始自动颜色映射..."));
   autoMapColors();
   isMappingDone = true;
   printDynamicMapping();
   Serial.println(F("颜色映射完成!"));
+  */
 
   // 初始化通信协议
   uartProtocolInit();
@@ -157,17 +159,17 @@ void loop() {
             
             // 判断进入哪个状态
             if (datathree == 1) {
-              /* 
+             
               // ===== 颜色映射模式 (已移至setup,此处注释) =====
               if (dataone == 0 && datatwo == 0) {
                 Serial.println(F("进入颜色映射模式..."));
                 systemState = STATE_COLOR_MAPPING;
                 servosReset = false;
                 bufferCleared = false; 
-              } else 
-              */
-              
-              if (dataone == 1) {
+              }  
+
+              // ===== 左右二维码识别模式 =====
+               else if (dataone == 1) {
                 // 进入左侧二维码识别
                 Serial.println(F("进入左侧二维码识别模式..."));
                 systemState = STATE_LEFT_QR;
@@ -191,7 +193,7 @@ void loop() {
       }
       break;
     
-    /* 
+    
     // ==================== 颜色映射状态 (已移至setup) ====================
     case STATE_COLOR_MAPPING:
       Serial.println(F("开始自动颜色映射..."));
@@ -201,22 +203,31 @@ void loop() {
       Serial.println(F("颜色映射完成!"));
       
       // 发送完成信号
-      sendData(1);
+      for(int i = 0; i < 3; i++) {
+        sendData(1);
+        delay(20);  // 确保信号被接收
+      }
+
       Serial.println(F("已向STM32发送完成信号"));
       
       // 返回空闲状态
       systemState = STATE_IDLE;
       delay(500);
       break;
-    */
+    
     
     // ==================== 左侧二维码识别 ====================
     case STATE_LEFT_QR:
-      Serial.println(F("正在放下左侧舵机..."));
-      zx20s_8Left();
-      zx20s_7Left();
-      delay(1000);  // 等待舵机到位
-      
+      // 只在第一次进入时放下舵机
+      static bool leftServosDeployed = false;
+      if (!leftServosDeployed) {
+        Serial.println(F("正在放下左侧舵机..."));
+        zx20s_8Left();
+        zx20s_7Left();
+        leftServosDeployed = true;
+        delay(1000);  // 等待舵机到位
+      }
+
       if (isMappingDone) {
         Serial.println(F("正在读取左侧二维码..."));
         gm65_1.listen();
@@ -232,29 +243,27 @@ void loop() {
           systemState = STATE_WAIT_DELAY;
           Serial.println(F("小球已释放,等待5秒..."));
         } else {
-          Serial.println(F("左侧二维码读取失败,正在复位..."));
-          //zx20s_8FuWei();
-          //zx20s_7FuWei();
-          sendData(0);  // 发送失败信号
-          //systemState = STATE_IDLE;
+          Serial.println(F("左侧二维码读取失败..."));
+  
         }
       } else {
         Serial.println(F("错误: 未完成颜色映射!"));
-        //zx20s_8FuWei();
-        //zx20s_7FuWei();
-        sendData(0);
-        //systemState = STATE_IDLE;
       }
       delay(SENSOR_READ_DELAY);
       break;
     
     // ==================== 右侧二维码识别 ====================
     case STATE_RIGHT_QR:
-      Serial.println(F("正在放下右侧舵机..."));
-      zx20s_9Right();
-      zx20s_7Right();
-      delay(1000);  // 等待舵机到位
-      
+      // 只在第一次进入时放下舵机
+      static bool rightServosDeployed = false;
+      if (!rightServosDeployed) {
+        Serial.println(F("正在放下右侧舵机..."));
+        zx20s_9Right();
+        zx20s_7Right();
+        rightServosDeployed = true;
+        delay(1000);  // 等待舵机到位
+      }
+
       if (isMappingDone) {
         Serial.println(F("正在读取右侧二维码..."));
         gm65_2.listen();
@@ -270,18 +279,10 @@ void loop() {
           systemState = STATE_WAIT_DELAY;
           Serial.println(F("小球已释放,等待5秒..."));
         } else {
-          Serial.println(F("右侧二维码读取失败,正在复位..."));
-          zx20s_9FuWei();
-          zx20s_7FuWei();
-          sendData(0);  // 发送失败信号
-          systemState = STATE_IDLE;
+          Serial.println(F("右侧二维码读取失败"));
         }
       } else {
         Serial.println(F("错误: 未完成颜色映射!"));
-        zx20s_9FuWei();
-        zx20s_7FuWei();
-        sendData(0);
-        systemState = STATE_IDLE;
       }
       delay(SENSOR_READ_DELAY);
       break;
@@ -295,11 +296,17 @@ void loop() {
         zx20s_9FuWei();
         
         // 发送完成信号
-        sendData(1);
+        for(int i = 0; i < 3; i++) {
+          sendData(1);
+          delay(20);  // 确保信号被接收
+        }
+
         Serial.println(F("操作完成,返回空闲状态"));
         
         // 返回空闲状态
         systemState = STATE_IDLE;
+        leftServosDeployed = false;  // 重置标志以便下次进入时重新放下舵机
+        rightServosDeployed = false; // 重置标志以便下次进入时重新放下舵机
         operationStartTime = 0;
       }
       break;

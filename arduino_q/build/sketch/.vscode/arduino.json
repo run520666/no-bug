@@ -1,6 +1,6 @@
 #line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\.vscode\\arduino.json"
 {
-  "port": "COM5",
+  "port": "COM6",
   "output": "build",
   "board": "arduino:avr:uno",
   "programmer": "arduinoasisp",
@@ -9,12 +9,15 @@
   "configurationRequired": false,
   "compile_profile": "",
   "monitorPortSettings": {
-    "port": "COM3",
-    "baudRate": 115200,
-    "lineEnding": "\r\n",
-    "dataBits": 8,
-    "parity": "none",
-    "stopBits": "one"
+    "settings": {
+      "port": "COM6",
+      "baudRate": 115200,
+      "lineEnding": "\r\n",
+      "dataBits": 8,
+      "parity": "none",
+      "stopBits": "one"
+    },
+    "profile_name": ""
   },
   "configuration": ""
 }
