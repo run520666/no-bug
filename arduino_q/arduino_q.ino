@@ -38,7 +38,6 @@ void setup() {
 
   // 初始化颜色传感器舵机
   sensorServoInit();
-  pushball();
   Serial.println(F("传感器舵机初始化完成"));
 
   // 初始化7、8、9号舵机
@@ -167,6 +166,7 @@ void loop() {
               /*
               if (dataone == 0 && datatwo == 0) {
                 Serial.println(F("进入颜色映射模式..."));
+                pushball();
                 systemState = STATE_COLOR_MAPPING;
                 servosReset = false;
                 bufferCleared = false; 
