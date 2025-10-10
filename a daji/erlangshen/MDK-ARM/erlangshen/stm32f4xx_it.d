@@ -39,7 +39,6 @@ erlangshen\stm32f4xx_it.o: ../applications/struct_typedef.h
 erlangshen\stm32f4xx_it.o: ../applications/hwt101.h
 erlangshen\stm32f4xx_it.o: ../Inc/usart.h
 erlangshen\stm32f4xx_it.o: ../applications/stp_23l.h
-erlangshen\stm32f4xx_it.o: D:\kile5\ARM\ARMCC\Bin\..\include\string.h
 erlangshen\stm32f4xx_it.o: ../applications/pid.h
 erlangshen\stm32f4xx_it.o: ../applications/CAN_receive.h
 erlangshen\stm32f4xx_it.o: ../applications/communication.h

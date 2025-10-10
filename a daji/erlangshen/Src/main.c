@@ -78,7 +78,9 @@ extern q_pid angle_pid_t; //转向pid
 
 /* 中断接收变量定义 */
 //uart6接收缓冲区（左激光）
-extern uint8_t uart6_rx_buf[1];
+ uint8_t uart6_rx_buf[1]={0};
+ uint8_t uart8_rx_buf[1]={0};
+
 //陀螺仪
 extern uint8_t g_usart7_receivedata;
 //通信
@@ -154,6 +156,9 @@ int main(void)
   HAL_UART_Receive_IT(&huart3, &rxByte, 1);
   HAL_UART_Receive_IT(&huart7, &g_usart7_receivedata, 1); // 开启串口7接收中断(陀螺仪)
   HAL_UART_Receive_IT(&huart6, uart6_rx_buf, 1); //左侧激光
+  HAL_UART_Receive_IT(&huart8, uart8_rx_buf, 1); //右侧激光
+
+    /* 开启定时器中断 */
 
   //定时器2中断
   HAL_TIM_Base_Start_IT(&htim2);
@@ -186,7 +191,8 @@ int main(void)
 
   /* 外设初始化 */
   //stp32初始化
-  STP23L_Init(&huart6);
+  STP23L_Init(&huart6,0); //左激光
+  STP23L_Init(&huart8,1); //右激光
 
 
   HAL_Delay(1000);

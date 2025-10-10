@@ -71,13 +71,12 @@ void setup() {
   // 初始化动态映射数组
   initDynamicMapping();
 
-  
-  // 执行自动颜色映射
- /* Serial.println(F("开始自动颜色映射..."));
+
+  Serial.println(F("开始自动颜色映射..."));
   autoMapColors();
   isMappingDone = true;
   printDynamicMapping();
-  Serial.println(F("颜色映射完成!"));*/
+  Serial.println(F("颜色映射完成!"));
   
 
   // 初始化通信协议
@@ -164,7 +163,7 @@ void loop() {
             
             if (datathree == 1) 
             {
-              
+              /*
               if (dataone == 0 && datatwo == 0) {
                 Serial.println(F("进入颜色映射模式..."));
                 pushball();
@@ -172,7 +171,7 @@ void loop() {
                 servosReset = false;
                 bufferCleared = false; 
               }
-              
+            */  
               
 
               // ===== 左右二维码识别模式 =====

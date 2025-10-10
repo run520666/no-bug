@@ -7,7 +7,7 @@
 #define SG90_MIN_PULSE 150
 #define SG90_MAX_PULSE 600
 #define SG90_HOME_PULSE 375
-#define SG90_RELATIVE_ANGLE -100
+#define SG90_RELATIVE_ANGLE 100
 
 extern Adafruit_PWMServoDriver pca;
 

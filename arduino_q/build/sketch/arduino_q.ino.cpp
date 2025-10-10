@@ -26,13 +26,13 @@ SystemState systemState = STATE_IDLE;
 
 // 延迟相关变量
 unsigned long operationStartTime = 0;
-const unsigned long RELEASE_DELAY = 7000;
+const unsigned long RELEASE_DELAY = 5000;
 bool waitingForReset = false;  // 是否正在等待复位
 
 // -------------------------- 初始化函数 --------------------------
 #line 31 "D:\\GIT\\no-bug\\arduino_q\\arduino_q.ino"
 void setup();
-#line 92 "D:\\GIT\\no-bug\\arduino_q\\arduino_q.ino"
+#line 91 "D:\\GIT\\no-bug\\arduino_q\\arduino_q.ino"
 void loop();
 #line 31 "D:\\GIT\\no-bug\\arduino_q\\arduino_q.ino"
 void setup() {
@@ -45,7 +45,7 @@ void setup() {
 
   // 初始化颜色传感器舵机
   sensorServoInit();
-  pushball();
+  //pushball();
   Serial.println(F("传感器舵机初始化完成"));
 
   // 初始化7、8、9号舵机
@@ -78,8 +78,7 @@ void setup() {
   // 初始化动态映射数组
   initDynamicMapping();
 
-  
-  // 执行自动颜色映射
+
   Serial.println(F("开始自动颜色映射..."));
   autoMapColors();
   isMappingDone = true;
@@ -174,12 +173,12 @@ void loop() {
               /*
               if (dataone == 0 && datatwo == 0) {
                 Serial.println(F("进入颜色映射模式..."));
+                pushball();
                 systemState = STATE_COLOR_MAPPING;
                 servosReset = false;
                 bufferCleared = false; 
               }
-              */
-              
+            */  
               
 
               // ===== 左右二维码识别模式 =====

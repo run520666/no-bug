@@ -73,7 +73,8 @@ extern UART_HandleTypeDef huart6;
 uint8_t g_usart7_receivedata = 0; // 接收数据
 
 //激光传感器变量
-uint8_t uart6_rx_buf[1] = {0};
+extern uint8_t uart6_rx_buf[1];  //左激光接收缓冲
+extern uint8_t uart8_rx_buf[1];  //右激光接收缓冲
 
 //通信变量
 extern uint8_t rxByte;
@@ -336,8 +337,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   }
   if(huart == &huart6)
   {
-    STP23L_RxCallback(uart6_rx_buf[0]);  /* 调用 STP-23L 解析函数 */
+    STP23L_RxCallback(uart6_rx_buf[0], 0);  /* 调用 STP-23L 解析函数 */
     HAL_UART_Receive_IT(&huart6, uart6_rx_buf, 1);  /* 重新开启接收中断 */
+  }
+  if(huart == &huart8)
+  {
+    STP23L_RxCallback(uart8_rx_buf[0], 1);  /* 调用 STP-23L 解析函数 */
+    HAL_UART_Receive_IT(&huart8, uart8_rx_buf, 1);//继续进行中断接收
   }
   if(huart == &huart3){
    // 状态机接收

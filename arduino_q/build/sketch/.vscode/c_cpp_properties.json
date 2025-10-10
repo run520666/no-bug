@@ -37,9 +37,9 @@
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SPI\\src",
-        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\gm65_qrcode.cpp",
         "-o",
-        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp.o"
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\gm65_qrcode.cpp.o"
       ],
       "defines": [
         "F_CPU=16000000L",

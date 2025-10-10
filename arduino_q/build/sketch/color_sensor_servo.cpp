@@ -13,10 +13,10 @@ const int ANGLE_STEP = 1;
 
 // 角度通道映射表
 AngleChannelMap angleMaps[] = {
-  {5,    0, 5},
+  {0,    0, 5},
   {47,   1, 6},
-  {95,   2, 7},
-  {135,  3, 8},
+  {90,   2, 7},
+  {130,  3, 8},
   {175,  4, 9}
 };
 const int ANGLE_MAP_COUNT = sizeof(angleMaps) / sizeof(angleMaps[0]);
@@ -49,7 +49,7 @@ void sensorServoInit() {
 void pushball() {
   sensorServo.write(0);
   delay(500);
-  sensorServo.write(180);
+  sensorServo.write(200);
   delay(500);
   sensorServo.write(0);
   delay(100);
@@ -396,7 +396,7 @@ int getChannelsByColor(const char* color, int channels[]) {
 
 void autoMapColors() {
   sensorServo.write(0);
-  delay(1500);
+  delay(500);
   
   for (int i = 0; i < ANGLE_MAP_COUNT; i++) {
     int angle = angleMaps[i].angle;
@@ -407,7 +407,7 @@ void autoMapColors() {
     Serial.println(angle);
     
     sensorServo.write(angle);
-    delay(1500);
+    delay(500);
     
     const char* color1 = detectColorSensor1();
     updateColorToChannels(color1, channel1);
@@ -427,5 +427,5 @@ void autoMapColors() {
   }
   
   sensorServo.write(0);
-  delay(1000);
+  delay(500);
 }
