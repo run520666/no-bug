@@ -7,9 +7,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -38,7 +38,7 @@
         "-DARDUINO_ARCH_AVR",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
         "-o",
         "nul"
       ]
@@ -52,9 +52,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -84,7 +84,7 @@
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Wire\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
         "-o",
         "nul"
       ]
@@ -98,9 +98,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -131,7 +131,7 @@
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Wire\\src",
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_PWM_Servo_Driver_Library",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
         "-o",
         "nul"
       ]
@@ -145,9 +145,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -179,7 +179,7 @@
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Wire\\src",
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_PWM_Servo_Driver_Library",
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
         "-o",
         "nul"
       ]
@@ -193,9 +193,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -228,7 +228,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_PWM_Servo_Driver_Library",
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
         "-o",
         "nul"
       ]
@@ -242,9 +242,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -278,7 +278,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
         "-o",
         "nul"
       ]
@@ -289,9 +289,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\color_sensor_servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\color_sensor_servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\color_sensor_servo.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\color_sensor_servo.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\color_sensor_servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\color_sensor_servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -325,7 +325,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\color_sensor_servo.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\color_sensor_servo.cpp",
         "-o",
         "nul"
       ]
@@ -336,9 +336,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\gm65_qrcode.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\gm65_qrcode.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\gm65_qrcode.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\gm65_qrcode.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\gm65_qrcode.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\gm65_qrcode.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -372,7 +372,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\gm65_qrcode.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\gm65_qrcode.cpp",
         "-o",
         "nul"
       ]
@@ -383,9 +383,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\pca9685_servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\pca9685_servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\pca9685_servo.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\pca9685_servo.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\pca9685_servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\pca9685_servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -419,7 +419,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\pca9685_servo.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\pca9685_servo.cpp",
         "-o",
         "nul"
       ]
@@ -430,9 +430,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\slide_servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\slide_servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\slide_servo.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\slide_servo.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\slide_servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\slide_servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -466,7 +466,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\slide_servo.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\slide_servo.cpp",
         "-o",
         "nul"
       ]
@@ -477,9 +477,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\tca9548a.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\tca9548a.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\tca9548a.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -513,7 +513,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\tca9548a.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp",
         "-o",
         "nul"
       ]
@@ -524,9 +524,9 @@
   },
   {
     "compile": {
-      "source_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\uart_protocol.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\uart_protocol.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\uart_protocol.cpp.d"
+      "source_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\uart_protocol.cpp",
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\uart_protocol.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\uart_protocol.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -560,7 +560,7 @@
         "-IC:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\uart_protocol.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\uart_protocol.cpp",
         "-o",
         "nul"
       ]
@@ -572,8 +572,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Wire\\src\\Wire.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Wire\\Wire.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Wire\\Wire.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Wire\\Wire.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Wire\\Wire.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -619,8 +619,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Wire\\src\\utility\\twi.c",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Wire\\utility\\twi.c.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Wire\\utility\\twi.c.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Wire\\utility\\twi.c.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Wire\\utility\\twi.c.d"
     },
     "compile_task": {
       "args": [
@@ -666,8 +666,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_PWM_Servo_Driver_Library\\Adafruit_PWMServoDriver.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_PWM_Servo_Driver_Library\\Adafruit_PWMServoDriver.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_PWM_Servo_Driver_Library\\Adafruit_PWMServoDriver.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_PWM_Servo_Driver_Library\\Adafruit_PWMServoDriver.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_PWM_Servo_Driver_Library\\Adafruit_PWMServoDriver.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -713,8 +713,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -763,8 +763,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -811,8 +811,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_GenericDevice.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_GenericDevice.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_GenericDevice.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_GenericDevice.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_GenericDevice.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -859,8 +859,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_I2CDevice.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_I2CDevice.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_I2CDevice.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_I2CDevice.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_I2CDevice.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -907,8 +907,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_SPIDevice.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_SPIDevice.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_SPIDevice.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_SPIDevice.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Adafruit_BusIO\\Adafruit_SPIDevice.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -955,8 +955,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src\\SoftwareSerial.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\SoftwareSerial\\SoftwareSerial.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\SoftwareSerial\\SoftwareSerial.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\SoftwareSerial\\SoftwareSerial.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\SoftwareSerial\\SoftwareSerial.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1003,8 +1003,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\avr\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\avr\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\avr\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\avr\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\avr\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1051,8 +1051,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\esp32\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\esp32\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\esp32\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\esp32\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\esp32\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1099,8 +1099,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\mbed\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\mbed\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\mbed\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\mbed\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\mbed\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1147,8 +1147,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\megaavr\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\megaavr\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\megaavr\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\megaavr\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\megaavr\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1195,8 +1195,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\nrf52\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\nrf52\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\nrf52\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\nrf52\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\nrf52\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1243,8 +1243,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\renesas\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\renesas\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\renesas\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\renesas\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\renesas\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1291,8 +1291,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\sam\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\sam\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\sam\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\sam\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\sam\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1339,8 +1339,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\samd\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\samd\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\samd\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\samd\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\samd\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1387,8 +1387,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\stm32f4\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\stm32f4\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\stm32f4\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\stm32f4\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\stm32f4\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1435,8 +1435,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src\\xmc\\Servo.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\xmc\\Servo.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\Servo\\xmc\\Servo.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\xmc\\Servo.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\Servo\\xmc\\Servo.cpp.d"
     },
     "compile_task": {
       "args": [
@@ -1483,8 +1483,8 @@
   {
     "compile": {
       "source_path": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SPI\\src\\SPI.cpp",
-      "object_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\SPI\\SPI.cpp.o",
-      "depfile_path": "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\libraries\\SPI\\SPI.cpp.d"
+      "object_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\SPI\\SPI.cpp.o",
+      "depfile_path": "D:\\GIT\\no-bug\\arduino_q\\build\\libraries\\SPI\\SPI.cpp.d"
     },
     "compile_task": {
       "args": [

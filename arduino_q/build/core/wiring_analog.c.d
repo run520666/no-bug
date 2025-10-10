@@ -1,4 +1,4 @@
-D:\GIT\NO-BUG-QJ\arduino_q\build\core\wiring_analog.c.o: \
+D:\GIT\no-bug\arduino_q\build\core\wiring_analog.c.o: \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino\wiring_analog.c \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino\wiring_private.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino\Arduino.h \

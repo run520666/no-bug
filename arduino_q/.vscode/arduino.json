@@ -1,5 +1,5 @@
 {
-  "port": "COM6",
+  "port": "COM5",
   "output": "build",
   "board": "arduino:avr:uno",
   "programmer": "arduinoasisp",

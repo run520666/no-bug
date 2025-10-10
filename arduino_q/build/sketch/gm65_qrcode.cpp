@@ -1,4 +1,4 @@
-#line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\gm65_qrcode.cpp"
+#line 1 "D:\\GIT\\no-bug\\arduino_q\\gm65_qrcode.cpp"
 #include "gm65_qrcode.h"
 #include "color_sensor_servo.h"
 #include "pca9685_servo.h"

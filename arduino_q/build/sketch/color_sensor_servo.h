@@ -1,4 +1,4 @@
-#line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\color_sensor_servo.h"
+#line 1 "D:\\GIT\\no-bug\\arduino_q\\color_sensor_servo.h"
 #ifndef COLOR_SENSOR_SERVO_H
 #define COLOR_SENSOR_SERVO_H
 

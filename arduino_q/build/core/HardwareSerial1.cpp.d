@@ -1,4 +1,4 @@
-D:\GIT\NO-BUG-QJ\arduino_q\build\core\HardwareSerial1.cpp.o: \
+D:\GIT\no-bug\arduino_q\build\core\HardwareSerial1.cpp.o: \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino\HardwareSerial1.cpp \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino\Arduino.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino\binary.h \

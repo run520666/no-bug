@@ -1,11 +1,11 @@
-#line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\.vscode\\c_cpp_properties.json"
+#line 1 "D:\\GIT\\no-bug\\arduino_q\\.vscode\\c_cpp_properties.json"
 {
   "configurations": [
     {
       "name": "Arduino",
       "includePath": [
         "C:\\Users\\qj\\Documents\\Arduino\\libraries/**",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q/**"
+        "D:\\GIT\\no-bug\\arduino_q/**"
       ],
       "forcedInclude": [],
       "compilerPath": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
@@ -37,9 +37,9 @@
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SoftwareSerial\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
         "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\SPI\\src",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp",
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp",
         "-o",
-        "D:\\GIT\\NO-BUG-QJ\\arduino_q\\build\\sketch\\arduino_q.ino.cpp.o"
+        "D:\\GIT\\no-bug\\arduino_q\\build\\sketch\\tca9548a.cpp.o"
       ],
       "defines": [
         "F_CPU=16000000L",

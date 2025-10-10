@@ -1,4 +1,4 @@
-#line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\gm65_qrcode.h"
+#line 1 "D:\\GIT\\no-bug\\arduino_q\\gm65_qrcode.h"
 #ifndef GM65_QRCODE_H
 #define GM65_QRCODE_H
 

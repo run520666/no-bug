@@ -1,5 +1,5 @@
-D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\arduino_q.ino.cpp.o: \
- D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\arduino_q.ino.cpp \
+D:\GIT\no-bug\arduino_q\build\sketch\arduino_q.ino.cpp.o: \
+ D:\GIT\no-bug\arduino_q\build\sketch\arduino_q.ino.cpp \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/binary.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/WCharacter.h \
@@ -18,9 +18,9 @@ D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\arduino_q.ino.cpp.o: \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\libraries\SoftwareSerial\src/SoftwareSerial.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\libraries\Servo\src/Servo.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\libraries\Servo\src/avr/ServoTimers.h \
- D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\tca9548a.h \
- D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\color_sensor_servo.h \
- D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\slide_servo.h \
- D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\pca9685_servo.h \
- D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\gm65_qrcode.h \
- D:\GIT\NO-BUG-QJ\arduino_q\build\sketch\uart_protocol.h
+ D:\GIT\no-bug\arduino_q\build\sketch\tca9548a.h \
+ D:\GIT\no-bug\arduino_q\build\sketch\color_sensor_servo.h \
+ D:\GIT\no-bug\arduino_q\build\sketch\slide_servo.h \
+ D:\GIT\no-bug\arduino_q\build\sketch\pca9685_servo.h \
+ D:\GIT\no-bug\arduino_q\build\sketch\gm65_qrcode.h \
+ D:\GIT\no-bug\arduino_q\build\sketch\uart_protocol.h

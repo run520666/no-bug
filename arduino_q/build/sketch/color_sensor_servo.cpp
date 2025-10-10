@@ -1,4 +1,4 @@
-#line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\color_sensor_servo.cpp"
+#line 1 "D:\\GIT\\no-bug\\arduino_q\\color_sensor_servo.cpp"
 #include "color_sensor_servo.h"
 #include "tca9548a.h"
 

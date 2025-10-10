@@ -1,4 +1,4 @@
-D:\GIT\NO-BUG-QJ\arduino_q\build\libraries\SPI\SPI.cpp.o: \
+D:\GIT\no-bug\arduino_q\build\libraries\SPI\SPI.cpp.o: \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\libraries\SPI\src\SPI.cpp \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\libraries\SPI\src\SPI.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h \

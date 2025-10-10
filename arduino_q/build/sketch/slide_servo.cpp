@@ -1,4 +1,4 @@
-#line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\slide_servo.cpp"
+#line 1 "D:\\GIT\\no-bug\\arduino_q\\slide_servo.cpp"
 #include "slide_servo.h"
 
 Servo zx20s_7;

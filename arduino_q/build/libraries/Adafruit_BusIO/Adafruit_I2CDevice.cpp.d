@@ -1,4 +1,4 @@
-D:\GIT\NO-BUG-QJ\arduino_q\build\libraries\Adafruit_BusIO\Adafruit_I2CDevice.cpp.o: \
+D:\GIT\no-bug\arduino_q\build\libraries\Adafruit_BusIO\Adafruit_I2CDevice.cpp.o: \
  C:\Users\qj\Documents\Arduino\libraries\Adafruit_BusIO\Adafruit_I2CDevice.cpp \
  C:\Users\qj\Documents\Arduino\libraries\Adafruit_BusIO\Adafruit_I2CDevice.h \
  C:\Users\qj\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h \

@@ -1,6 +1,6 @@
-#line 1 "D:\\GIT\\NO-BUG-QJ\\arduino_q\\.vscode\\arduino.json"
+#line 1 "D:\\GIT\\no-bug\\arduino_q\\.vscode\\arduino.json"
 {
-  "port": "COM6",
+  "port": "COM5",
   "output": "build",
   "board": "arduino:avr:uno",
   "programmer": "arduinoasisp",
