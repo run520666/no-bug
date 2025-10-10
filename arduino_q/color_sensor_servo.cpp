@@ -48,7 +48,7 @@ void sensorServoInit() {
 void pushball() {
   sensorServo.write(0);
   delay(500);
-  sensorServo.write(180);
+  sensorServo.write(200);
   delay(500);
   sensorServo.write(0);
   delay(100);

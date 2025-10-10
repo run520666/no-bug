@@ -24,7 +24,7 @@ SystemState systemState = STATE_IDLE;
 
 // 延迟相关变量
 unsigned long operationStartTime = 0;
-const unsigned long RELEASE_DELAY = 7000;
+const unsigned long RELEASE_DELAY = 5000;
 bool waitingForReset = false;  // 是否正在等待复位
 
 // -------------------------- 初始化函数 --------------------------
@@ -38,6 +38,7 @@ void setup() {
 
   // 初始化颜色传感器舵机
   sensorServoInit();
+  //pushball();
   Serial.println(F("传感器舵机初始化完成"));
 
   // 初始化7、8、9号舵机
@@ -72,11 +73,11 @@ void setup() {
 
   
   // 执行自动颜色映射
-  Serial.println(F("开始自动颜色映射..."));
+ /* Serial.println(F("开始自动颜色映射..."));
   autoMapColors();
   isMappingDone = true;
   printDynamicMapping();
-  Serial.println(F("颜色映射完成!"));
+  Serial.println(F("颜色映射完成!"));*/
   
 
   // 初始化通信协议
@@ -163,7 +164,7 @@ void loop() {
             
             if (datathree == 1) 
             {
-              /*
+              
               if (dataone == 0 && datatwo == 0) {
                 Serial.println(F("进入颜色映射模式..."));
                 pushball();
@@ -171,7 +172,6 @@ void loop() {
                 servosReset = false;
                 bufferCleared = false; 
               }
-              */
               
               
 
