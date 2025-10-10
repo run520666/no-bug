@@ -206,8 +206,66 @@ void loop() {
       }
     }
     
+<<<<<<< Updated upstream
     rxIndex = 0;
     frameReceived = false;
+=======
+    // ==================== 右侧二维码识别 ====================
+    case STATE_RIGHT_QR:
+      Serial.println(F("正在放下右侧舵机..."));
+      zx20s_9Right();
+      zx20s_7Right();
+      delay(1000);  // 等待舵机到位
+      
+      if (isMappingDone) {
+        Serial.println(F("正在读取右侧二维码..."));
+        gm65_2.listen();
+        String data2 = readGM65Data(gm65_2);
+        
+        if (data2.length() > 0) {
+          Serial.print(F("右侧二维码数据: "));
+          Serial.println(data2);
+          processGM65Data(data2, 2);
+          
+          // 记录操作开始时间
+          operationStartTime = millis();
+          systemState = STATE_WAIT_DELAY;
+          Serial.println(F("小球已释放,等待5秒..."));
+        } else {
+          Serial.println(F("右侧二维码读取失败,正在复位..."));
+          //zx20s_9FuWei();
+          //zx20s_7FuWei();
+          sendData(0);  // 发送失败信号
+          //systemState = STATE_IDLE;
+        }
+      } else {
+        Serial.println(F("错误: 未完成颜色映射!"));
+        //zx20s_9FuWei();
+        //zx20s_7FuWei();
+        sendData(0);
+        //systemState = STATE_IDLE;
+      }
+      delay(SENSOR_READ_DELAY);
+      break;
+    
+    // ==================== 等待延迟状态 ====================
+    case STATE_WAIT_DELAY:
+      if (millis() - operationStartTime >= RELEASE_DELAY) {
+        Serial.println(F("5秒已到,正在复位舵机..."));
+        zx20s_7FuWei();
+        zx20s_8FuWei();
+        zx20s_9FuWei();
+        
+        // 发送完成信号
+        sendData(1);
+        Serial.println(F("操作完成,返回空闲状态"));
+        
+        // 返回空闲状态
+        systemState = STATE_IDLE;
+        operationStartTime = 0;
+      }
+      break;
+>>>>>>> Stashed changes
   }
 
   delay(100);
