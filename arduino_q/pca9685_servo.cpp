@@ -27,7 +27,7 @@ void controlSG90Relative(int channel, int relativeAngle) {
   tcaSelect(TCA_PCA9685_CH);
   uint16_t pulse = relativeAngleToPulseSG90(relativeAngle);
   pca.setPWM(channel, 0, pulse);
-  delay(500);
+  delay(1000);
 }
 
 void resetSG90(int channel) {
