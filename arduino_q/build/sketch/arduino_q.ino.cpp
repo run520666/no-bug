@@ -249,6 +249,10 @@ void loop() {
         zx20s_7Left();
         leftServosDeployed = true;
         delay(1000);  // 等待舵机到位
+         while (gm65_1.available()) {
+        gm65_1.read();
+      }
+      delay(100);  // 等待新数据到来
         waitingForReset = false;  // 重置等待标志
       }
 
@@ -284,12 +288,16 @@ void loop() {
         if (isMappingDone)
         {
           gm65_1.listen();
-          String data1 = readGM65Data(gm65_1);
-          
+          while (gm65_1.available()) {
+        gm65_1.read();
+      }
+      delay(100);  // 等待新数据到来
+      
+      String data1 = readGM65Data(gm65_1);
           if (data1.length() > 0) {
             Serial.println(F("左侧二维码数据: "));
             Serial.println(data1);
-            processGM65Data(data1, 1);
+            processGM65Data(data1, 1); //放球
             
             // 记录操作开始时间,进入等待复位状态
             operationStartTime = millis();
@@ -319,6 +327,10 @@ void loop() {
         zx20s_7Right();
         rightServosDeployed = true;
         delay(1000);  // 等待舵机到位
+          while (gm65_2.available()) {
+        gm65_2.read();
+      }
+      delay(100);  // 等待新数据到来
         waitingForReset = false;  // 重置等待标志
       }
 
