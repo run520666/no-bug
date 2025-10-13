@@ -25,7 +25,7 @@ int zx20s_8_currentAngle = 56;
 int zx20s_9_currentAngle = 159;
 
 // 平滑移动延时(毫秒),可调节移动速度
-int servoMoveDelay = 15;
+int servoMoveDelay = 7;
 
 // 平滑移动函数
 void smoothMove(Servo &servo, int &currentAngle, int targetAngle) {
