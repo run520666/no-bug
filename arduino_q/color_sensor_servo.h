@@ -15,6 +15,13 @@
 
 // 传感器舵机配置
 #define SENSOR_SERVO_PIN 6
+
+// ✅ 270度舵机参数
+#define SERVO_270_MIN_PULSE 500   // 0度对应的脉宽(微秒)
+#define SERVO_270_MAX_PULSE 2500  // 270度对应的脉宽(微秒)
+#define SERVO_270_MIN_ANGLE 0     // 最小角度
+#define SERVO_270_MAX_ANGLE 270   // 最大角度
+
 extern Servo sensorServo;
 
 // 角度通道映射结构
@@ -57,5 +64,8 @@ void updateColorToChannels(const char* color, int channel);
 void printDynamicMapping();
 int getChannelsByColor(const char* color, int channels[]);
 void autoMapColors();
+
+// ✅ 270度舵机控制函数
+void servo270Write(int angle);
 
 #endif

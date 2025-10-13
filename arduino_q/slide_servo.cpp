@@ -1,20 +1,47 @@
 #include "slide_servo.h"
 
+// ========== 舵机角度配置区 - 修改这里即可调整各舵机位置 ==========
+// 七号舵机 (翻转舵机) 角度定义
+int zx20s_7_initialAngle = 84;  // 七号初始位置
+int zx20s_7_leftAngle = 75;     // 七号左位置
+int zx20s_7_rightAngle = 96;    // 七号右位置
+
+// 八号舵机 (左滑道) 角度定义
+int zx20s_8_initialAngle = 56;  // 八号初始位置
+int zx20s_8_leftAngle = 140;    // 八号左位置
+
+// 九号舵机 (右滑道) 角度定义
+int zx20s_9_initialAngle = 159; // 九号初始位置
+int zx20s_9_rightAngle = 59;    // 九号右位置
+// ==============================================================
+
 Servo zx20s_7;
 Servo zx20s_8;
 Servo zx20s_9;
 
-int pos = 0;
-int zx20s_7_initialAngle = 90;
-int zx20s_7_moveAngle = 20;
-int zx20s_7_currentAngle = 90;
-int zx20s_8_initialAngle = 165;
-int zx20s_8_moveAngle = 95;
-int zx20s_8_currentAngle = 165;
-int zx20s_9_initialAngle = 35;
-int zx20s_9_moveAngle = 115;
-int zx20s_9_currentAngle = 35;
-int direction = 0;
+// 记录当前角度用于平滑移动
+int zx20s_7_currentAngle = 84;
+int zx20s_8_currentAngle = 56;
+int zx20s_9_currentAngle = 159;
+
+// 平滑移动延时(毫秒),可调节移动速度
+int servoMoveDelay = 15;
+
+// 平滑移动函数
+void smoothMove(Servo &servo, int &currentAngle, int targetAngle) {
+  if (currentAngle < targetAngle) {
+    for (int pos = currentAngle; pos <= targetAngle; pos++) {
+      servo.write(pos);
+      delay(servoMoveDelay);
+    }
+  } else {
+    for (int pos = currentAngle; pos >= targetAngle; pos--) {
+      servo.write(pos);
+      delay(servoMoveDelay);
+    }
+  }
+  currentAngle = targetAngle;
+}
 
 void zx20s_7ChuShiHua() {
   zx20s_7.attach(ZX20S_PIN_7);
@@ -25,21 +52,17 @@ void zx20s_7ChuShiHua() {
 }
 
 void zx20s_7Left() {
-  zx20s_7_currentAngle = zx20s_7_currentAngle + zx20s_7_moveAngle;
-  if (zx20s_7_currentAngle > 180) zx20s_7_currentAngle = 180;
-  zx20s_7.write(zx20s_7_currentAngle);
+  smoothMove(zx20s_7, zx20s_7_currentAngle, zx20s_7_leftAngle);
+  Serial.println("左翻");
 }
 
 void zx20s_7Right() {
-  zx20s_7_currentAngle = zx20s_7_currentAngle - zx20s_7_moveAngle;
-  if (zx20s_7_currentAngle < 0) zx20s_7_currentAngle = 0;
-  zx20s_7.write(zx20s_7_currentAngle);
-  Serial.println("右翻 ");
+  smoothMove(zx20s_7, zx20s_7_currentAngle, zx20s_7_rightAngle);
+  Serial.println("右翻");
 }
 
 void zx20s_7FuWei() {
-  zx20s_7_currentAngle = zx20s_7_initialAngle;
-  zx20s_7.write(zx20s_7_currentAngle);
+  smoothMove(zx20s_7, zx20s_7_currentAngle, zx20s_7_initialAngle);
   Serial.println("复位初始角度");
 }
 
@@ -52,20 +75,12 @@ void zx20s_8ChuShiHua() {
 }
 
 void zx20s_8Left() {
-  if (zx20s_8_currentAngle < 0) zx20s_8_currentAngle = 0;
-  zx20s_8_currentAngle = zx20s_8_currentAngle - zx20s_8_moveAngle;
-   
-  zx20s_8.write(zx20s_8_currentAngle);
-  for (pos = 180; pos >= zx20s_8_currentAngle; pos -= 1) {
-    zx20s_8.write(pos);
-    delay(10);
-  }
+  smoothMove(zx20s_8, zx20s_8_currentAngle, zx20s_8_leftAngle);
   Serial.println("左滑道已放下");
 }
 
 void zx20s_8FuWei() {
-  zx20s_8_currentAngle = zx20s_8_initialAngle;
-  zx20s_8.write(zx20s_8_currentAngle);
+  smoothMove(zx20s_8, zx20s_8_currentAngle, zx20s_8_initialAngle);
   Serial.println("左舵机复位初始角度");
 }
 
@@ -78,18 +93,11 @@ void zx20s_9ChuShiHua() {
 }
 
 void zx20s_9Right() {
-  zx20s_9_currentAngle = zx20s_9_currentAngle + zx20s_9_moveAngle;
-  if (zx20s_9_currentAngle > 180) zx20s_9_currentAngle = 180;
-  zx20s_9.write(zx20s_9_currentAngle);
-  for (pos = 0; pos <= zx20s_9_currentAngle; pos += 1) {
-    zx20s_9.write(pos);
-    delay(15);
-  }
+  smoothMove(zx20s_9, zx20s_9_currentAngle, zx20s_9_rightAngle);
   Serial.println("右滑道已放下");
 }
 
 void zx20s_9FuWei() {
-  zx20s_9_currentAngle = zx20s_9_initialAngle;
-  zx20s_9.write(zx20s_9_currentAngle);
+  smoothMove(zx20s_9, zx20s_9_currentAngle, zx20s_9_initialAngle);
   Serial.println("右舵机复位初始角度");
 }

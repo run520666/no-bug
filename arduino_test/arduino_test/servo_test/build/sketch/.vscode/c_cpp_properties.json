@@ -1,0 +1,51 @@
+#line 1 "D:\\GIT\\no-bug\\arduino_test\\arduino_test\\servo_test\\.vscode\\c_cpp_properties.json"
+{
+  "configurations": [
+    {
+      "name": "Arduino",
+      "includePath": [
+        "C:\\Users\\qj\\Documents\\Arduino\\libraries/**",
+        "D:\\GIT\\no-bug\\arduino_test\\arduino_test\\servo_test/**"
+      ],
+      "forcedInclude": [],
+      "compilerPath": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+      "compilerArgs": [
+        "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\avr-gcc\\7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+        "-c",
+        "-g",
+        "-Os",
+        "-w",
+        "-std=gnu++11",
+        "-fpermissive",
+        "-fno-exceptions",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-threadsafe-statics",
+        "-Wno-error=narrowing",
+        "-MMD",
+        "-flto",
+        "-mmcu=atmega328p",
+        "-DF_CPU=16000000L",
+        "-DARDUINO=10607",
+        "-DARDUINO_AVR_UNO",
+        "-DARDUINO_ARCH_AVR",
+        "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\cores\\arduino",
+        "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\variants\\standard",
+        "-IC:\\Users\\qj\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6\\libraries\\Servo\\src",
+        "D:\\GIT\\no-bug\\arduino_test\\arduino_test\\servo_test\\build\\sketch\\servo_test.ino.cpp",
+        "-o",
+        "D:\\GIT\\no-bug\\arduino_test\\arduino_test\\servo_test\\build\\sketch\\servo_test.ino.cpp.o"
+      ],
+      "defines": [
+        "F_CPU=16000000L",
+        "ARDUINO=10607",
+        "ARDUINO_AVR_UNO",
+        "ARDUINO_ARCH_AVR",
+        "USBCON"
+      ],
+      "cStandard": "c17",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}

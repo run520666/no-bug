@@ -1,0 +1,19 @@
+{
+  "port": "COM4",
+  "configuration": "",
+  "output": "build",
+  "board": "arduino:avr:uno",
+  "programmer": "arduinoisp",
+  "useProgrammer": false,
+  "optimize_for_debug": false,
+  "configurationRequired": false,
+  "compile_profile": "Arduino_Uno",
+  "monitorPortSettings": {
+    "port": "COM4",
+    "baudRate": 115200,
+    "lineEnding": "\r\n",
+    "dataBits": 8,
+    "parity": "none",
+    "stopBits": "one"
+  }
+}

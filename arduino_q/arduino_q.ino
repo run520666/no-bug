@@ -10,6 +10,7 @@
 #include "pca9685_servo.h"
 #include "gm65_qrcode.h"
 #include "uart_protocol.h"
+#include "asr_pro.h"
 
 // -------------------------- 状态机管理 --------------------------
 // 主状态机枚举
@@ -46,6 +47,9 @@ void setup() {
   zx20s_8ChuShiHua();
   zx20s_9ChuShiHua();
   Serial.println(F("7、8、9号舵机初始化完成"));
+  delay(1000);
+
+
 
   // 初始化TCA9548A
   Serial.println(F("正在初始化TCA9548A..."));
@@ -67,6 +71,9 @@ void setup() {
   // 初始化GM65二维码模块
   gm65Init();
   Serial.println(F("两个GM65模块就绪"));
+
+  // 初始化ASR语音模块
+  asrInit();
 
   // 初始化动态映射数组
   initDynamicMapping();
@@ -251,9 +258,9 @@ void loop() {
 
       // 复位状态
       if (waitingForReset) {
-        if (millis() - operationStartTime >= 5000) 
+        if (millis() - operationStartTime >= 3000) 
         {
-          Serial.println(F("5秒已到,正在复位舵机..."));
+          Serial.println(F("3秒已到,正在复位舵机..."));
           zx20s_7FuWei();
           zx20s_8FuWei();
           zx20s_9FuWei();
@@ -287,9 +294,10 @@ void loop() {
       delay(100);  // 等待新数据到来
       
       String data1 = readGM65Data(gm65_1);
-          if (data1.length() > 0) {
+          if (data1.length() > 0 && data1 != "o") {
             Serial.println(F("左侧二维码数据: "));
             Serial.println(data1);
+            sendToAsr(data1);
             processGM65Data(data1, 1); //放球
             
             // 记录操作开始时间,进入等待复位状态
@@ -297,6 +305,24 @@ void loop() {
             waitingForReset = true;
             Serial.println(F("小球已释放,等待5秒后复位..."));
           }
+          if(data1 == "o") 
+          {
+          Serial.println(F("左侧二维码数据: "));
+          Serial.println(data1);
+          zx20s_7FuWei();
+          zx20s_8FuWei();
+          zx20s_9FuWei();
+          systemState = STATE_IDLE;
+          leftServosDeployed = false;  // 重置标志
+          waitingForReset = false; // 重置等待标志
+          operationStartTime = 0; // 重置时间开始标志
+          }
+            
+          else {
+        // ✅ 添加：读取失败提示
+        Serial.println(F("左侧二维码读取失败,请重试..."));
+        Serial.println(F("左侧二维码读取中..."));
+      }
         } 
         else 
         {
@@ -361,17 +387,37 @@ void loop() {
         {
           gm65_2.listen();
           String data2 = readGM65Data(gm65_2);
-          
-          if (data2.length() > 0) 
+
+          if (data2.length() > 0 && data2 != "o")
           {
             Serial.print(F("右侧二维码数据: "));
             Serial.println(data2);
+            sendToAsr(data2);
             processGM65Data(data2, 2);
             
             // 记录操作开始时间,进入等待复位状态
             operationStartTime = millis();
             waitingForReset = true;
             Serial.println(F("小球已释放,等待5秒后复位..."));
+          }
+          if(data2 == "o") 
+          {
+            Serial.println(F("右侧二维码数据: "));
+            Serial.println(data2);
+            Serial.println(F("干扰货站"));
+            zx20s_7FuWei();
+            zx20s_8FuWei();
+            zx20s_9FuWei();
+          systemState = STATE_IDLE;
+          rightServosDeployed = false;  // 重置标志
+          waitingForReset = false;
+          operationStartTime = 0;
+          }
+          else 
+          {
+          // ✅ 添加：读取失败提示
+            Serial.println(F("右侧二维码读取失败,请重试..."));
+            Serial.println(F("右侧二维码读取中..."));
           }
         } 
         
