@@ -405,7 +405,7 @@ void loop() {
           String data2 = readGM65Data(gm65_2);
 
 
-          if (data2.length() > 0)
+          if (data2.length() > 0 && data2 != "o")
           {
             Serial.print(F("右侧二维码数据: "));
             Serial.println(data2);
@@ -414,11 +414,18 @@ void loop() {
             String firstCharStr = String(firstChar);
             sendToAsr(firstCharStr);
 
-            if(firstCharStr == "o") 
+            delay(100);
+            if (firstCharStr == "o") 
             {
               zx20s_7FuWei();
               zx20s_8FuWei();
               zx20s_9FuWei();
+
+               for(int i = 0; i < 3; i++) {
+            sendData(1);
+            delay(10);  // 确保信号被接收
+          }
+            Serial.println(F("操作完成,返回空闲状态"));
               systemState = STATE_IDLE;
               rightServosDeployed = false;  // 重置标志
               waitingForReset = false; // 重置等待标志
