@@ -1,0 +1,23 @@
+{
+<<<<<<< Updated upstream:第一次正式版10.2/.vscode/arduino.json
+  "port": "COM3",
+  "configuration": "",
+=======
+  "port": "COM6",
+>>>>>>> Stashed changes:arduino_q/.vscode/arduino.json
+  "output": "build",
+  "board": "",
+  "programmer": "",
+  "useProgrammer": false,
+  "optimize_for_debug": false,
+  "configurationRequired": false,
+  "compile_profile": "",
+  "monitorPortSettings": {
+    "port": "COM3",
+    "baudRate": 115200,
+    "lineEnding": "\r\n",
+    "dataBits": 8,
+    "parity": "none",
+    "stopBits": "one"
+  }
+}

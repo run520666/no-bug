@@ -1,0 +1,7 @@
+--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../application -I ../bsp/boards
+-I.\RTE\_can
+-ID:\kile5\ARM\PACK\ARM\CMSIS\5.2.0\CMSIS\Include
+-ID:\kile5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+-ID:\kile5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include
+-D__UVISION_VERSION="525" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx
+-o can\mecanum_control.o --omf_browse can\mecanum_control.crf --depend can\mecanum_control.d "..\application\mecanum_control.c"

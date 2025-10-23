@@ -1,0 +1,9 @@
+{
+  "additionalFiles": "..\\..\\..,..\\..,..\\..",
+  "compiler.optimization_flags": "",
+  "customBuildProperties": "",
+  "fqbn": "arduino:avr:uno",
+  "hardwareFolders": "C:\\Users\\qj\\AppData\\Local\\Arduino15\\packages",
+  "otherLibrariesFolders": "C:\\Users\\qj\\Documents\\Arduino\\libraries",
+  "sketchLocation": "D:\\GIT\\no-bug\\arduino_test\\servo_test\\servo_test"
+}

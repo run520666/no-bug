@@ -1,0 +1,12 @@
+profiles:
+  Arduino_Uno:
+    fqbn: arduino:avr:uno
+    platforms:
+      - platform: arduino:avr (1.8.6)
+    programmer: ""
+    port: COM4
+    port_config:
+      baudrate: "115200"
+      bits: "8"
+      parity: none
+      stop_bits: one
